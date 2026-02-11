@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Night Ledger - AutoSave</title>
+    <title>Poker Night Ledger - Chip Counter</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
         h1 { text-align: center; margin-bottom: 5px; }
@@ -44,6 +44,9 @@
         .suggestion { margin-top: 10px; font-style: italic; color: #555; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 4px; }
         .highlight { font-weight: bold; color: #2e7d32; }
         .arrow { font-weight: bold; color: #666; font-size: 1.2em; margin: 0 10px; }
+        
+        /* Chip Count Display */
+        .chip-badge { display: inline-block; background: #34495e; color: #fff; font-size: 0.85em; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
         
         /* Perfect Match Badge */
         .perfect-badge { font-size: 0.75em; background: #ffeb3b; color: #555; padding: 2px 6px; border-radius: 4px; margin-left: 10px; border: 1px solid #e6db55; }
@@ -98,7 +101,7 @@
 
     <script>
         // --- STORAGE LOGIC ---
-        const STORAGE_KEY = 'pokerLedgerData_v1';
+        const STORAGE_KEY = 'pokerLedgerData_v9';
 
         window.onload = function() {
             loadData();
@@ -122,7 +125,7 @@
         function loadData() {
             const savedData = localStorage.getItem(STORAGE_KEY);
             const tbody = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
-            tbody.innerHTML = ""; // Clear existing
+            tbody.innerHTML = ""; 
 
             if (savedData) {
                 const players = JSON.parse(savedData);
@@ -140,26 +143,22 @@
             addPlayer(); addPlayer(); addPlayer(); addPlayer();
         }
 
-        // Modified addPlayer to accept data and trigger saves
         function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
             
-            // Note the oninput="saveData()" on every input field
             newRow.innerHTML = `
                 <td><input type="text" placeholder="Name" value="${name}" oninput="saveData()"></td>
                 <td><input type="number" min="1" placeholder="1" value="${buyins}" oninput="saveData()"></td>
                 <td><input type="number" min="0" placeholder="0" value="${chips}" oninput="saveData()"></td>
                 <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
             `;
-            
-            // Save immediately when adding a row
             saveData();
         }
 
         function removeRow(btn) {
             btn.parentNode.parentNode.remove();
-            saveData(); // Save immediately when removing
+            saveData(); 
         }
 
         function reset() {
@@ -169,7 +168,7 @@
             }
         }
 
-        // --- CALCULATION LOGIC (Same as before) ---
+        // --- CALCULATION LOGIC ---
         function calculate() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let players = [];
@@ -255,7 +254,6 @@
                 loser.net += amount;
             }
 
-            // Pass 3: Add Break Even players
             breakEven.forEach(p => {
                 payouts.push(`
                     <div class='breakeven'>
@@ -268,7 +266,6 @@
             let outputDiv = document.getElementById("payoutList");
             outputDiv.innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='transfer'>No transactions needed.</div>";
             document.getElementById("results").style.display = "block";
-            
             document.getElementById("results").scrollIntoView({behavior: "smooth"});
         }
 
@@ -281,41 +278,51 @@
                 </div>`;
         }
 
+        // --- NEW ERROR LOGIC ---
         function showError(diff) {
             let box = document.getElementById("errorBox");
             let detail = document.getElementById("errorDetail");
             let suggestion = document.getElementById("smartSuggestion");
             
             box.style.display = "block";
-            let diffStr = Math.abs(diff).toFixed(2);
-            let sign = diff > 0 ? "Extra" : "Missing";
             
-            detail.innerHTML = `Table Balance: <strong>$${diffStr} ${sign}</strong> compared to the Book.`;
+            // Calc Chips (1 chip = $0.25)
+            let chipCount = diff / 0.25;
+            let absChips = Math.abs(chipCount);
+            
+            let diffStr = Math.abs(diff).toFixed(2);
+            let sign = diff > 0 ? "Extra (+)" : "Missing (-)";
+            
+            // 1. Show Money AND Chips
+            detail.innerHTML = `
+                Balance: <strong>$${diffStr} ${sign}</strong><br>
+                <div class="chip-badge">That is about <strong>${absChips} Chips</strong></div>
+            `;
 
+            // 2. Detective Logic
             let msg = "";
             let absDiff = Math.abs(diff);
-            let buyinsMissed = Math.round(absDiff / 10);
-            let remainder = Math.abs(absDiff - (buyinsMissed * 10));
 
-            if (diff > 0) {
-                if (remainder < 1.00 && buyinsMissed > 0) {
-                    msg = `💡 <strong>Suggestion:</strong> It looks like <strong>${buyinsMissed} Buy-in(s)</strong> were not recorded.`;
-                } else {
-                    msg = `💡 <strong>Suggestion:</strong> You have $${diffStr} extra. Check chip counts.`;
-                }
-            } else {
-                if (remainder < 1.00 && buyinsMissed > 0) {
-                     msg = `💡 <strong>Suggestion:</strong> The bank is short exactly <strong>${buyinsMissed} Buy-in(s)</strong>. Did someone forget to pay?`;
-                } else if (absDiff === 9.75) {
-                     msg = `💡 <strong>Suggestion:</strong> Off by $9.75? Usually means a missed 1-chip count or typo.`;
-                } else {
-                    msg = `💡 <strong>Suggestion:</strong> $${diffStr} is missing.`;
-                }
+            // Case A: Near $10 ($8.00 to $12.00) -> Missing Buy-in
+            if (absDiff >= 8 && absDiff <= 12) {
+                msg = `💡 <strong>Suggestion:</strong> This is very close to <strong>$10 (1 Buy-in)</strong>.<br>Someone likely forgot to write down their buy-in.`;
+            } 
+            // Case B: Small Amount ($0.25 to $2.50) -> Chip Counting Error
+            else if (absDiff <= 2.50) {
+                 msg = `💡 <strong>Suggestion:</strong> This is a small amount (approx <strong>${absChips} chips</strong>).<br>Likely a typo or miscounted stack.`;
+            } 
+            // Case C: Standard Multiples check
+            else {
+                 let buyins = Math.round(absDiff / 10);
+                 if (buyins > 0) {
+                      msg = `💡 <strong>Suggestion:</strong> Looks like roughly <strong>${buyins} Buy-in(s)</strong> are missing/extra.`;
+                 } else {
+                      msg = `💡 <strong>Suggestion:</strong> Double check your chip counts.`;
+                 }
             }
             suggestion.innerHTML = msg;
         }
 
-        // --- Confetti Logic ---
         function triggerConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -345,12 +352,10 @@
                     p.y += p.speed;
                     p.wobble += 0.05;
                     p.x += Math.sin(p.wobble) * 2;
-                    
                     ctx.fillStyle = p.color;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
-
                     if (p.y < canvas.height) active = true;
                 });
 
