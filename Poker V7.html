@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Night Ledger - Smart Classic</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
+        h1 { text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9em; margin-bottom: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; position: relative; z-index: 2; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 10px; font-size: 0.85em; text-transform: uppercase; color: #888; border-bottom: 2px solid #eee; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        
+        /* Inputs */
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; text-align: center; box-sizing: border-box; }
+        input:focus { outline: none; border-color: #007bff; background: #f0f8ff; }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: opacity 0.2s; }
+        button:hover { opacity: 0.9; }
+        .btn-add { background-color: #e3f2fd; color: #007bff; }
+        .btn-calc { background-color: #28a745; color: white; box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3); }
+        .btn-reset { background-color: #ffc107; color: #333; }
+        .delete-btn { background: none; color: #ff4d4d; font-size: 18px; padding: 0 10px; cursor: pointer; }
+        
+        /* Results & Errors */
+        #results { display: none; border-top: 4px solid #28a745; animation: slideUp 0.5s ease-out; }
+        
+        .status-header { text-align: center; font-weight: bold; margin-bottom: 15px; padding: 10px; border-radius: 6px; }
+        .status-success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .status-fail { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+        .transfer { padding: 12px; background: #f8f9fa; border-radius: 6px; margin-bottom: 8px; font-size: 1.05em; border-left: 4px solid #007bff; display: flex; justify-content: space-between; align-items: center; }
+        .breakeven { padding: 12px; background: #fff; border: 1px dashed #ccc; border-radius: 6px; margin-bottom: 8px; color: #666; font-style: italic; display: flex; justify-content: space-between; }
+        
+        /* The Error/Suggestion Box */
+        #errorBox { display: none; background: #fff5f5; border: 1px solid #ffcccc; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .error-title { color: #d32f2f; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .suggestion { margin-top: 10px; font-style: italic; color: #555; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 4px; }
+        .highlight { font-weight: bold; color: #2e7d32; }
+        .arrow { font-weight: bold; color: #666; font-size: 1.2em; margin: 0 10px; }
+        
+        /* Perfect Match Badge */
+        .perfect-badge { font-size: 0.75em; background: #ffeb3b; color: #555; padding: 2px 6px; border-radius: 4px; margin-left: 10px; border: 1px solid #e6db55; }
+
+        /* Confetti Canvas */
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <h1>Poker Night Ledger</h1>
+    <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
+
+    <div class="card">
+        <table id="playerTable">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th style="width: 20%;">Buy-ins ($10)</th>
+                    <th style="width: 25%;">End Chips</th>
+                    <th style="width: 5%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+
+        <div class="btn-group">
+            <button class="btn-add" onclick="addPlayer()">+ Add Player</button>
+        </div>
+        <div class="btn-group">
+            <button class="btn-calc" onclick="calculate()">Calculate Payouts</button>
+            <button class="btn-reset" onclick="reset()">Reset</button>
+        </div>
+
+        <div id="errorBox">
+            <div class="error-title">❌ Totals do not match!</div>
+            <div id="errorDetail" style="margin-top:5px;"></div>
+            <div id="smartSuggestion" class="suggestion"></div>
+        </div>
+    </div>
+
+    <div id="results" class="card">
+        <div id="statusMessage" class="status-header status-success"></div>
+        <h3>💰 Settlements</h3>
+        <div id="payoutList"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            addPlayer(); addPlayer(); addPlayer(); addPlayer();
+        };
+
+        function addPlayer() {
+            const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="text" placeholder="Name"></td>
+                <td><input type="number" min="1" value="1" placeholder="1"></td>
+                <td><input type="number" min="0" placeholder="0"></td>
+                <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
+            `;
+        }
+
+        function removeRow(btn) {
+            btn.parentNode.parentNode.remove();
+        }
+
+        function reset() { location.reload(); }
+
+        function calculate() {
+            const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
+            let players = [];
+            let totalInvested = 0;
+            let totalCashOut = 0;
+            
+            document.getElementById("errorBox").style.display = "none";
+            document.getElementById("results").style.display = "none";
+
+            // 1. Gather Data
+            for (let i = 0; i < rows.length; i++) {
+                let inputs = rows[i].getElementsByTagName("input");
+                let name = inputs[0].value.trim();
+                let buyinQty = parseInt(inputs[1].value) || 0;
+                let chipCount = parseFloat(inputs[2].value) || 0;
+
+                if (name === "") continue;
+
+                let invested = buyinQty * 10;
+                let cashValue = chipCount * 0.25;
+                let net = cashValue - invested;
+
+                totalInvested += invested;
+                totalCashOut += cashValue;
+
+                players.push({ name: name, net: net });
+            }
+
+            // 2. Validate Math
+            let discrepancy = totalCashOut - totalInvested;
+            let statusDiv = document.getElementById("statusMessage");
+            let isBalanced = false;
+
+            if (Math.abs(discrepancy) > 0.10) {
+                showError(discrepancy);
+                statusDiv.innerHTML = "❌ Totals do not match";
+                statusDiv.className = "status-header status-fail";
+            } else {
+                isBalanced = true;
+                statusDiv.innerHTML = "✅ Totals Match";
+                statusDiv.className = "status-header status-success";
+                triggerConfetti();
+            }
+
+            // 3. Smart Calculation
+            let winners = players.filter(p => p.net > 0.01).map(p => ({...p}));
+            let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
+            let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); // Identify break evens
+            
+            let payouts = [];
+
+            // Pass 1: Perfect Matches
+            for (let w = 0; w < winners.length; w++) {
+                if (winners[w].net === 0) continue;
+                for (let l = 0; l < losers.length; l++) {
+                    if (losers[l].net === 0) continue;
+                    
+                    if (Math.abs(winners[w].net + losers[l].net) < 0.01) {
+                        payouts.push(createPayout(losers[l].name, winners[w].name, winners[w].net, true));
+                        winners[w].net = 0;
+                        losers[l].net = 0;
+                    }
+                }
+            }
+
+            // Pass 2: Greedy Settlement
+            winners.sort((a, b) => b.net - a.net);
+            losers.sort((a, b) => a.net - b.net); 
+
+            let wIdx = 0, lIdx = 0;
+            while (wIdx < winners.length && lIdx < losers.length) {
+                let winner = winners[wIdx];
+                let loser = losers[lIdx];
+                
+                if (winner.net < 0.01) { wIdx++; continue; }
+                if (loser.net > -0.01) { lIdx++; continue; }
+
+                let amount = Math.min(winner.net, Math.abs(loser.net));
+                
+                if (amount > 0.01) {
+                    payouts.push(createPayout(loser.name, winner.name, amount, false));
+                }
+
+                winner.net -= amount;
+                loser.net += amount;
+            }
+
+            // Pass 3: Add Break Even players
+            breakEven.forEach(p => {
+                payouts.push(`
+                    <div class='breakeven'>
+                        <span><strong>${p.name}</strong></span>
+                        <span>Break Even</span>
+                    </div>
+                `);
+            });
+
+            let outputDiv = document.getElementById("payoutList");
+            outputDiv.innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='transfer'>No transactions needed.</div>";
+            document.getElementById("results").style.display = "block";
+            
+            document.getElementById("results").scrollIntoView({behavior: "smooth"});
+        }
+
+        function createPayout(from, to, amount, isPerfect) {
+            let badge = isPerfect ? `<span class="perfect-badge">⭐ Perfect Match</span>` : "";
+            return `
+                <div class='transfer'>
+                    <span><strong>${from}</strong> <span class="arrow">➔</span> <strong>${to}</strong> ${badge}</span>
+                    <span class='highlight'>$${amount.toFixed(2)}</span>
+                </div>`;
+        }
+
+        function showError(diff) {
+            let box = document.getElementById("errorBox");
+            let detail = document.getElementById("errorDetail");
+            let suggestion = document.getElementById("smartSuggestion");
+            
+            box.style.display = "block";
+            let diffStr = Math.abs(diff).toFixed(2);
+            let sign = diff > 0 ? "Extra" : "Missing";
+            
+            detail.innerHTML = `Table Balance: <strong>$${diffStr} ${sign}</strong> compared to the Book.`;
+
+            let msg = "";
+            let absDiff = Math.abs(diff);
+            let buyinsMissed = Math.round(absDiff / 10);
+            let remainder = Math.abs(absDiff - (buyinsMissed * 10));
+
+            if (diff > 0) {
+                if (remainder < 1.00 && buyinsMissed > 0) {
+                    msg = `💡 <strong>Suggestion:</strong> It looks like <strong>${buyinsMissed} Buy-in(s)</strong> were not recorded.`;
+                } else {
+                    msg = `💡 <strong>Suggestion:</strong> You have $${diffStr} extra. Check chip counts.`;
+                }
+            } else {
+                if (remainder < 1.00 && buyinsMissed > 0) {
+                     msg = `💡 <strong>Suggestion:</strong> The bank is short exactly <strong>${buyinsMissed} Buy-in(s)</strong>. Did someone forget to pay?`;
+                } else if (absDiff === 9.75) {
+                     msg = `💡 <strong>Suggestion:</strong> Off by $9.75? Usually means a missed 1-chip count or typo.`;
+                } else {
+                    msg = `💡 <strong>Suggestion:</strong> $${diffStr} is missing.`;
+                }
+            }
+            suggestion.innerHTML = msg;
+        }
+
+        // --- Confetti Logic ---
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#28a745', '#007bff', '#ffc107', '#dc3545'];
+
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4,
+                    speed: Math.random() * 5 + 2,
+                    wobble: Math.random() * 2 * Math.PI
+                });
+            }
+
+            let animationId;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+                
+                particles.forEach(p => {
+                    p.y += p.speed;
+                    p.wobble += 0.05;
+                    p.x += Math.sin(p.wobble) * 2;
+                    
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.y < canvas.height) active = true;
+                });
+
+                if (active) requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
