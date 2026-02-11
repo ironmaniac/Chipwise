@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Night Ledger - Smart Classic</title>
+    <title>Poker Night Ledger - AutoSave</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
         h1 { text-align: center; margin-bottom: 5px; }
@@ -98,27 +97,79 @@
     </div>
 
     <script>
+        // --- STORAGE LOGIC ---
+        const STORAGE_KEY = 'pokerLedgerData_v1';
+
         window.onload = function() {
-            addPlayer(); addPlayer(); addPlayer(); addPlayer();
+            loadData();
         };
 
-        function addPlayer() {
+        function saveData() {
+            const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
+            let data = [];
+            
+            for (let i = 0; i < rows.length; i++) {
+                let inputs = rows[i].getElementsByTagName("input");
+                data.push({
+                    name: inputs[0].value,
+                    buyins: inputs[1].value,
+                    chips: inputs[2].value
+                });
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            const tbody = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
+            tbody.innerHTML = ""; // Clear existing
+
+            if (savedData) {
+                const players = JSON.parse(savedData);
+                if (players.length > 0) {
+                    players.forEach(p => addPlayer(p.name, p.buyins, p.chips));
+                } else {
+                    addDefaults();
+                }
+            } else {
+                addDefaults();
+            }
+        }
+
+        function addDefaults() {
+            addPlayer(); addPlayer(); addPlayer(); addPlayer();
+        }
+
+        // Modified addPlayer to accept data and trigger saves
+        function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
+            
+            // Note the oninput="saveData()" on every input field
             newRow.innerHTML = `
-                <td><input type="text" placeholder="Name"></td>
-                <td><input type="number" min="1" value="1" placeholder="1"></td>
-                <td><input type="number" min="0" placeholder="0"></td>
+                <td><input type="text" placeholder="Name" value="${name}" oninput="saveData()"></td>
+                <td><input type="number" min="1" placeholder="1" value="${buyins}" oninput="saveData()"></td>
+                <td><input type="number" min="0" placeholder="0" value="${chips}" oninput="saveData()"></td>
                 <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
             `;
+            
+            // Save immediately when adding a row
+            saveData();
         }
 
         function removeRow(btn) {
             btn.parentNode.parentNode.remove();
+            saveData(); // Save immediately when removing
         }
 
-        function reset() { location.reload(); }
+        function reset() {
+            if(confirm("Are you sure you want to clear all data and start over?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
 
+        // --- CALCULATION LOGIC (Same as before) ---
         function calculate() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let players = [];
@@ -150,14 +201,12 @@
             // 2. Validate Math
             let discrepancy = totalCashOut - totalInvested;
             let statusDiv = document.getElementById("statusMessage");
-            let isBalanced = false;
 
             if (Math.abs(discrepancy) > 0.10) {
                 showError(discrepancy);
                 statusDiv.innerHTML = "❌ Totals do not match";
                 statusDiv.className = "status-header status-fail";
             } else {
-                isBalanced = true;
                 statusDiv.innerHTML = "✅ Totals Match";
                 statusDiv.className = "status-header status-success";
                 triggerConfetti();
@@ -166,7 +215,7 @@
             // 3. Smart Calculation
             let winners = players.filter(p => p.net > 0.01).map(p => ({...p}));
             let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
-            let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); // Identify break evens
+            let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
             
             let payouts = [];
 
@@ -312,4 +361,3 @@
     </script>
 </body>
 </html>
-
