@@ -33,14 +33,13 @@
             left: -50px; 
             width: calc(100% + 100px); 
             height: calc(100% + 100px);
-            
+            /* Using the poker_bg.jpg referenced in CSS for consistency */
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
             background-size: cover;       
             background-position: center;  
             background-repeat: no-repeat;
-            
-            filter: blur(6px); 
+            filter: blur(4px); 
             z-index: -1;
             transform: scale(1.1);
         }
@@ -48,7 +47,7 @@
         /* --- 2. GLASS HEADER --- */
         .glass-header {
             text-align: center;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.482);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -116,7 +115,7 @@
         input[type="number"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; box-sizing: border-box; background: #f8f9fa; }
         input:focus { outline: none; border-color: #007bff; background: #fff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
 
-        /* --- NEW TINTED GLASS BUTTONS --- */
+        /* --- GLASS BUTTONS --- */
         .btn-group { display: flex; gap: 12px; margin-top: 20px; }
         
         button { 
@@ -126,69 +125,44 @@
             cursor: pointer; 
             font-weight: 700; 
             font-size: 16px; 
-            color: #444; /* Darker text for glass readability */
-            
-            /* Glass Core Logic */
+            color: #444;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Soft shadow */
-            
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
         }
 
-        /* 1. Add Player (Blue Tint) */
-        .btn-add { 
-            background: rgba(33, 150, 243, 0.85); /* Very transparent blue */
-            color: white;
-        }
-        /* Hover Effect: Fills with color 
-        .btn-add:hover { 
-            background: rgba(33, 150, 243, 0.85); 
-            color: white;
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
-            border-color: rgba(255,255,255,0.6);
-            transform: translateY(-2px);
-        }*/
+        .btn-add { background: rgba(33, 150, 243, 0.15); color: #1976d2; }
+        .btn-add:hover { background: rgba(33, 150, 243, 0.85); color: white; box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4); border-color: rgba(255,255,255,0.6); transform: translateY(-2px); }
 
-        /* 2. Calculate (Green Tint) */
-        .btn-calc { 
-            background: rgba(76, 175, 80, 0.85); 
-            color: white;
-        }
-        /* Hover Effect 
-        .btn-calc:hover { 
-            background: rgba(76, 175, 80, 0.85); 
-            color: white;
-            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
-            border-color: rgba(255,255,255,0.6);
-            transform: translateY(-2px);
-        }*/
+        .btn-calc { background: rgba(76, 175, 80, 0.15); color: #2e7d32; }
+        .btn-calc:hover { background: rgba(76, 175, 80, 0.85); color: white; box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4); border-color: rgba(255,255,255,0.6); transform: translateY(-2px); }
 
-        /* 3. Reset (Amber Tint) */
-        .btn-reset { 
-            background: rgba(255, 193, 7, 0.85); /* Very transparent amber */
-            color: white;
-        }
-        /* Hover Effect 
-        .btn-reset:hover { 
-            background: rgba(255, 193, 7, 0.85); 
-            color: white;
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
-            border-color: rgba(255,255,255,0.6);
-            transform: translateY(-2px);
-        }*/
+        .btn-reset { background: rgba(255, 193, 7, 0.15); color: #f57f17; }
+        .btn-reset:hover { background: rgba(255, 193, 7, 0.85); color: white; box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4); border-color: rgba(255,255,255,0.6); transform: translateY(-2px); }
         
+        /* SHARE BUTTON (Purple) */
+        .btn-share { 
+            background: rgba(156, 39, 176, 0.15); 
+            color: #9c27b0; 
+            margin-top: 15px; 
+            width: 100%; 
+            display: none; 
+        }
+        .btn-share:hover { 
+            background: rgba(156, 39, 176, 0.85); 
+            color: white; 
+            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4); 
+            border-color: rgba(255,255,255,0.6); 
+            transform: translateY(-2px); 
+        }
+
         button:active { transform: scale(0.96); }
 
-        /* Delete Button */
-        .delete-btn { 
-            background: none; color: #ff4d4d; font-size: 20px; padding: 0; width: 30px; height: 30px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%;
-            box-shadow: none; border: none; backdrop-filter: none;
-        }
+        .delete-btn { background: none; color: #ff4d4d; font-size: 20px; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; box-shadow: none; border: none; backdrop-filter: none; }
         .delete-btn:hover { background-color: #fff0f0; transform: none; box-shadow: none; color: #d32f2f; }
         
         /* --- RESULTS SECTION --- */
@@ -271,10 +245,15 @@
     <div id="results" class="card">
         <div id="statusMessage" class="status-header status-success"></div>
         <div id="payoutList"></div>
+        <button id="shareBtn" class="btn-share" onclick="generateAndShareImage()">📸 Share Results</button>
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v12_squad';
+        const STORAGE_KEY = 'chipwise_v20_perfect_canvas';
+        let currentPayouts = []; // Store payouts data for sharing
+        // We use the same image as CSS for consistency. Ensure this file exists next to HTML.
+        const BACKGROUND_IMAGE_URL = 'cash.jpg'; 
+
         window.onload = function() { loadData(); };
 
         function saveData() {
@@ -299,11 +278,10 @@
         }
 
         function addDefaults() {
-            // Sorted Alphabetically (Numbers first)
             const squad = ["4FT", "Aashu", "Appu", "Bunty", "Mad", "Ravi", "Rohit", "Teja"];
             squad.forEach(name => addPlayer(name));
         }
-        
+
         function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
@@ -317,15 +295,18 @@
         }
 
         function removeRow(btn) { btn.parentNode.parentNode.remove(); saveData(); }
-        function reset() { if(confirm("Clear all data?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+        function reset() { if(confirm("Clear all data and reset to squad defaults?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
 
         function calculate() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let players = [];
             let totalInvested = 0;
             let totalCashOut = 0;
+            currentPayouts = []; // Reset shared data
+
             document.getElementById("errorBox").style.display = "none";
             document.getElementById("results").style.display = "none";
+            document.getElementById("shareBtn").style.display = "none"; 
 
             for (let i = 0; i < rows.length; i++) {
                 let inputs = rows[i].getElementsByTagName("input");
@@ -352,14 +333,17 @@
                 let winners = players.filter(p => p.net > 0.01).map(p => ({...p}));
                 let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
                 let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
-                let payouts = [];
+                
+                let payoutHTML = [];
 
                 for (let w = 0; w < winners.length; w++) {
                     if (winners[w].net === 0) continue;
                     for (let l = 0; l < losers.length; l++) {
                         if (losers[l].net === 0) continue;
                         if (Math.abs(winners[w].net + losers[l].net) < 0.01) {
-                            payouts.push(createPayout(losers[l].name, winners[w].name, winners[w].net, true));
+                            let amt = winners[w].net;
+                            currentPayouts.push({ from: losers[l].name, to: winners[w].name, amt: amt, type: 'perfect' });
+                            payoutHTML.push(createPayout(losers[l].name, winners[w].name, amt, true));
                             winners[w].net = 0; losers[l].net = 0;
                         }
                     }
@@ -373,13 +357,19 @@
                     if (winner.net < 0.01) { wIdx++; continue; }
                     if (loser.net > -0.01) { lIdx++; continue; }
                     let amount = Math.min(winner.net, Math.abs(loser.net));
-                    if (amount > 0.01) payouts.push(createPayout(loser.name, winner.name, amount, false));
+                    if (amount > 0.01) {
+                        currentPayouts.push({ from: loser.name, to: winner.name, amt: amount, type: 'normal' });
+                        payoutHTML.push(createPayout(loser.name, winner.name, amount, false));
+                    }
                     winner.net -= amount; loser.net += amount;
                 }
-                breakEven.forEach(p => { payouts.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`); });
+                breakEven.forEach(p => { 
+                    payoutHTML.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`); 
+                });
 
-                document.getElementById("payoutList").innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
+                document.getElementById("payoutList").innerHTML = payoutHTML.length > 0 ? payoutHTML.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
                 document.getElementById("results").style.display = "block";
+                document.getElementById("shareBtn").style.display = "block"; 
                 document.getElementById("results").scrollIntoView({behavior: "smooth"});
             }
         }
@@ -413,7 +403,207 @@
             suggestion.innerHTML = msg;
         }
 
-        // --- NEW FASTER & BRIGHTER CONFETTI ENGINE ---
+        // --- PIXEL-PERFECT CANVAS DRAWING ENGINE ---
+function generateAndShareImage() {
+    const shareBtn = document.getElementById("shareBtn");
+    const originalText = shareBtn.innerText;
+    shareBtn.innerText = "🎨 Drawing...";
+    shareBtn.style.opacity = "0.7";
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Setup dimensions
+    const width = 800;
+    const headerHeight = 220; 
+    const rowHeight = 140; 
+    const padding = 40;
+    const listHeight = Math.max(currentPayouts.length * rowHeight, 100); 
+    const height = headerHeight + listHeight + padding * 2;
+    
+    canvas.width = width;
+    canvas.height = height;
+
+    const bgImage = new Image();
+    bgImage.src = BACKGROUND_IMAGE_URL;
+
+    bgImage.onload = function() {
+        // 1. Draw Background Image
+        // --- FIX: Draw Background with "Cover" aspect ratio ---
+const imgRatio = bgImage.width / bgImage.height;
+const canvasRatio = width / height;
+let renderWidth, renderHeight, offsetX, offsetY;
+
+if (imgRatio > canvasRatio) {
+    // Image is wider than canvas
+    renderHeight = height;
+    renderWidth = bgImage.width * (height / bgImage.height);
+    offsetX = (width - renderWidth) / 2;
+    offsetY = 0;
+} else {
+    // Image is taller than canvas
+    renderWidth = width;
+    renderHeight = bgImage.height * (width / bgImage.width);
+    offsetX = 0;
+    offsetY = (height - renderHeight) / 2;
+}
+
+ctx.drawImage(bgImage, offsetX, offsetY, renderWidth, renderHeight);
+
+// Apply a slight dark overlay so text remains readable over any image
+ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; 
+ctx.fillRect(0, 0, width, height);
+        
+        // --- 2. DRAW GLASS HEADER ---
+        // --- 2. DRAW GLASS HEADER (Updating existing variables) ---
+        headW = 550; 
+        headH = 150; // Increased height for more breathing room
+        headX = (width - headW) / 2;
+        headY = 40;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 32;
+        drawRoundedRect(ctx, headX, headY, headW, headH, 24, "rgba(255, 255, 255, 0.55)");
+        
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // --- HEADER TEXT ---
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.font = "bold 65px 'Lobster', cursive";
+        // Title position
+        ctx.fillText("Chipwise Payouts", width / 2, headY + 75);
+        
+        // --- SUBTITLE (Added spacing here) ---
+        ctx.font = "500 22px -apple-system, BlinkMacSystemFont, sans-serif";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+        // Changed from +100 to +125 to create a clear gap
+        ctx.fillText("All Balanced. Time to Settle Up!", width / 2, headY + 125);
+
+        // --- 3. DRAW MAIN SETTLEMENT CARD ---
+        const cardX = padding;
+        const cardY = headerHeight;
+        const cardW = width - (padding * 2);
+        const cardH = listHeight + 40;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+        ctx.shadowBlur = 40;
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 16, "rgba(255, 255, 255, 0.92)");
+        ctx.restore();
+
+        // --- 4. DRAW SETTLEMENT ROWS ---
+        let currentY = cardY + 40;
+        const standardFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
+        currentPayouts.forEach((p, index) => {
+            const centerY = currentY + (rowHeight / 2) - 20;
+
+            // Settlement Row Box (The "Card" style from your results section)
+            ctx.save();
+            ctx.strokeStyle = "#f1f3f4";
+            ctx.lineWidth = 2;
+            drawRoundedRect(ctx, cardX + 20, currentY, cardW - 40, rowHeight - 20, 12, "#ffffff");
+            ctx.stroke();
+            ctx.restore();
+
+            // Payer (Left)
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#333";
+            ctx.font = "bold 24px " + standardFont;
+            ctx.fillText(p.from, cardX + 50, centerY);
+            drawBadge(ctx, "PAYS", cardX + 50, centerY + 25, 'payer');
+
+            // Receiver (Right)
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#333";
+            ctx.font = "bold 24px " + standardFont;
+            ctx.fillText(p.to, cardX + cardW - 50, centerY);
+            drawBadge(ctx, "GETS", cardX + cardW - 50, centerY + 25, 'receiver', true);
+
+            // Amount (Center)
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#2d3436";
+            ctx.font = "800 42px " + standardFont;
+            ctx.fillText("$" + p.amt.toFixed(2), width / 2, centerY + 10);
+            
+            // Arrow
+            ctx.font = "24px sans-serif";
+            ctx.fillStyle = "#b2bec3";
+            ctx.fillText("➔", width / 2, centerY + 40);
+
+            // Perfect Match Tag
+            if (p.type === 'perfect') {
+                ctx.fillStyle = "#f1c40f";
+                drawRoundedRect(ctx, width/2 - 60, currentY - 10, 130, 22, 4, "#f1c40f");
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 12px " + standardFont;
+                ctx.fillText("\u00A0\u00A0⭐ PERFECT MATCH", width / 2, currentY + 6);
+            }
+
+            currentY += rowHeight;
+        });
+
+        finalizeShare(canvas, shareBtn, originalText);
+    };
+    
+    // Fallback if background image is missing
+    bgImage.onerror = () => { bgImage.src = ""; bgImage.onload(); };
+}
+
+// --- UPDATED BADGE HELPER ---
+    function drawBadge(ctx, text, x, y, type, isRight = false) {
+        ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
+        const w = ctx.measureText(text).width + 16;
+        const h = 20;
+        const bx = isRight ? x - w : x;
+        
+        const bgColor = type === 'payer' ? '#fadbd8' : '#d5f5e3';
+        const textColor = type === 'payer' ? '#c0392b' : '#27ae60';
+        
+        drawRoundedRect(ctx, bx, y, w, h, 10, bgColor);
+        ctx.fillStyle = textColor;
+        ctx.textAlign = "center";
+        ctx.fillText(text, bx + (w/2), y + 14);
+    }
+
+        // --- HELPER: Finalize Share Process ---
+        function finalizeShare(canvas, btn, originalText) {
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], "chipwise_payouts.png", { type: "image/png" });
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file], title: 'Chipwise Settlement', text: 'Payouts! ♠️♥️'
+                        });
+                    } catch (err) { console.log("Share cancelled", err); }
+                } else {
+                    const link = document.createElement('a');
+                    link.download = 'chipwise_payouts.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                    alert("Image saved to device!");
+                }
+            });
+        }
+
+        function drawRoundedRect(ctx, x, y, w, h, r, color) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+        }
+
+        // --- SUPERNOVA CONFETTI ---
         function triggerConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -421,23 +611,26 @@
             canvas.height = window.innerHeight;
 
             const particles = [];
-            // Added new vibrant colors to the existing list
             const colors = [
                 '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548', '#FFD700', '#C0C0C0',
                 '#FF1493', '#00FF7F', '#FF69B4', '#1E90FF', '#FFFF00', '#00FFFF', '#FF4500', '#ADFF2F', '#FF00FF', '#7FFF00', '#8A2BE2', '#FFD700', '#00CED1', '#FF6347', '#32CD32', '#9370DB', '#40E0D0'
             ];
             
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 400; i++) {
+                const velocity = Math.random() * 45 + 15; 
+                const angle = Math.random() * Math.PI * 2; 
+                
                 particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 6 + 4, // Size
-                    d: Math.random() * 20 + 10, // Density
+                    x: canvas.width / 2, 
+                    y: canvas.height / 2,
+                    vx: Math.cos(angle) * velocity,
+                    vy: Math.sin(angle) * velocity,
+                    r: Math.random() * 6 + 4, 
                     color: colors[Math.floor(Math.random() * colors.length)],
                     tilt: Math.floor(Math.random() * 10) - 10,
                     tiltAngle: 0,
                     tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
-                    shape: Math.random() < 0.6 ? 'square' : 'circle' // 60% Paper, 40% Dots/Glitter
+                    shape: Math.random() < 0.6 ? 'square' : 'circle'
                 });
             }
 
@@ -447,25 +640,22 @@
                 
                 particles.forEach((p) => {
                     p.tiltAngle += p.tiltAngleIncremental;
-                    
-                    // FASTER Fall physics (0.9 instead of 0.5)
-                    p.y += (Math.cos(p.d) + 1 + p.r / 2) * 0.9;
-                    
-                    // Sway physics
-                    p.x += Math.sin(p.tiltAngle);
-                    
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.4; 
+                    p.vx *= 0.94; 
+                    p.vy *= 0.94;
+
                     if (p.y < canvas.height) active = true;
                     
                     ctx.fillStyle = p.color;
                     ctx.beginPath();
                     
                     if (p.shape === 'square') {
-                        // 3D Flip Effect
                         let width = p.r * 2;
                         let height = p.r * 2 * Math.abs(Math.cos(p.tiltAngle)); 
                         ctx.fillRect(p.x, p.y, width, height);
                     } else {
-                        // Standard Confetti Dot
                         ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
                         ctx.fill();
                     }
