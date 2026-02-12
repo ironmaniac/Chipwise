@@ -567,7 +567,7 @@
         const newRow = table.insertRow();
         newRow.innerHTML = `
                 <td><input type="text" placeholder="Name" value="${name}" oninput="saveData()"></td>
-                <td><input type="number" min="1" placeholder="1" value="${buyins}" oninput="saveData()"></td>
+                <td><input type="number" min="1" placeholder="1" value="${buyins}" oninput="saveData()"onfocus="this.select()"></td>
                 <td><input type="number" min="0" placeholder="0" value="${chips}" oninput="saveData()"></td>
                 <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
             `;
