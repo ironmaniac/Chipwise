@@ -12,42 +12,59 @@
             max-width: 600px; 
             margin: 0 auto; 
             padding: 15px; 
+            color: #333; 
+            overflow-x: hidden; /* Prevent scroll from blur scaling */
+        }
+
+        /* --- BACKGROUND BLUR FIX --- */
+        /* We use a pseudo-element so we can blur the BG without blurring the text */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10px; left: -10px; width: calc(100% + 20px); height: calc(100% + 20px);
             
-            /* --- BACKGROUND FIXES --- */
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
-            background-size: cover;       /* Stretch to cover entire screen */
-            background-position: center;  /* Center the image */
-            background-repeat: no-repeat; /* Do not tile/duplicate */
-            background-attachment: fixed; /* Keep background fixed while scrolling */
+            background-size: cover;       
+            background-position: center;  
+            background-repeat: no-repeat;
             
-            color: #333; 
+            /* THE BLUR */
+            filter: blur(4px); 
+            z-index: -1;
         }
         
+        /* --- TITLE VISIBILITY --- */
         h1 { 
             font-family: 'Lobster', cursive; 
             text-align: center; 
             margin-bottom: 5px; 
-            font-size: 3.5em; 
+            font-size: 4em; /* Made slightly bigger */
             color: #ffffff; 
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+            
+            /* Stronger shadow to pop against blur */
+            text-shadow: 
+                0 4px 6px rgba(0,0,0,0.6),  /* Deep drop shadow */
+                0 0 20px rgba(0,0,0,0.2);   /* Soft outer glow */
             letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
         }
         
         .subtitle { 
             text-align: center; 
-            color: #e0e0e0; 
+            color: #f0f0f0; /* Brighter white for better contrast */
             font-size: 1.1em; 
             margin-bottom: 25px; 
             font-weight: 500; 
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Added shadow to subtitle too */
         }
         
         .card { 
-            background: rgba(255, 255, 255, 0.95); 
+            background: rgba(255, 255, 255, 0.96); /* Less transparent to hide busy blur */
             padding: 15px;
             border-radius: 12px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25); 
             margin-bottom: 20px; 
             position: relative; 
             z-index: 2; 
@@ -66,11 +83,7 @@
             vertical-align: bottom;
         }
         
-        td { 
-            padding: 8px 4px; 
-            border-bottom: 1px solid #eee; 
-            vertical-align: middle;
-        }
+        td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
 
         .col-player { text-align: left; width: auto; }
         .col-num { text-align: center; width: 1%; }
@@ -90,17 +103,8 @@
         .btn-reset { background-color: #ffc107; color: #333; }
         
         .delete-btn { 
-            background: none; 
-            color: #ff4d4d; 
-            font-size: 20px; 
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer; 
-            border-radius: 50%;
+            background: none; color: #ff4d4d; font-size: 20px; padding: 0; width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%;
         }
         .delete-btn:hover { background-color: #fff0f0; }
         
@@ -184,7 +188,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v3';
+        const STORAGE_KEY = 'chipwise_v4';
         window.onload = function() { loadData(); };
 
         function saveData() {
