@@ -17,22 +17,21 @@
             height: 100%;
             overflow-x: hidden; /* Prevent horizontal scroll */
         }
-
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             color: #333; 
             padding: 20px; /* Padding for content only */
+            background-color: #1a2639; /* Fallback background color */
         }
-
         /* --- 1. FIXED BACKGROUND (No White Edges) --- */
         body::before {
             content: "";
             position: fixed;
-            /* Oversize the background to hide blur edges */
-            top: -20px; 
-            left: -20px; 
-            width: calc(100% + 40px); 
-            height: calc(100% + 40px);
+            /* Dramatically oversize the background to completely hide blur edges */
+            top: -50px; 
+            left: -50px; 
+            width: calc(100% + 100px); 
+            height: calc(100% + 100px);
             
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
@@ -42,8 +41,10 @@
             
             filter: blur(4px); 
             z-index: -1;
+            
+            /* Prevent any gaps */
+            transform: scale(1.1);
         }
-
         /* --- 2. GLASS HEADER --- */
         .glass-header {
             text-align: center;
@@ -57,7 +58,6 @@
             width: fit-content;
             margin: 0 auto 30px auto;
         }
-
         /* --- 3. REFINED TITLE SHADOW --- */
         h1 { 
             font-family: 'Lobster', cursive; 
@@ -106,16 +106,13 @@
         }
         
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
-
         .col-player { text-align: left; width: auto; }
         .col-num { text-align: center; width: 1%; }
         .col-del { text-align: center; width: 30px; }
-
         /* Inputs */
         input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #f8f9fa; }
         input[type="number"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; box-sizing: border-box; background: #f8f9fa; }
         input:focus { outline: none; border-color: #007bff; background: #fff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
-
         /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-top: 20px; }
         button { flex: 1; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: opacity 0.2s, transform 0.1s; }
@@ -153,7 +150,6 @@
         .amount-arrow { font-size: 1.2em; color: #b2bec3; margin-top: -5px; display: block; }
         .perfect-tag { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #fff; font-size: 0.65em; font-weight: bold; padding: 2px 8px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .breakeven-card { background: #f8f9fa; color: #95a5a6; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed #ced6e0; font-style: italic; }
-
         /* --- ERROR BOX --- */
         #errorBox { display: none; background: #fff5f5; border: 2px solid #ffcccc; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
         .error-title { color: #c0392b; font-weight: bold; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
@@ -162,7 +158,6 @@
         .stat-label { font-size: 0.85em; color: #e74c3c; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
         .stat-chips { font-size: 1.4em; font-weight: 700; color: #2c3e50; background: #ecf0f1; display: inline-block; padding: 5px 15px; border-radius: 20px; }
         .suggestion-box { font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #ffe6e6; padding-top: 10px; margin-top: 10px; }
-
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
@@ -174,7 +169,6 @@
         <h1>Chipwise</h1>
         <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
     </div>
-
     <div class="card">
         <table id="playerTable">
             <thead>
@@ -187,7 +181,6 @@
             </thead>
             <tbody></tbody>
         </table>
-
         <div class="btn-group">
             <button class="btn-add" onclick="addPlayer()">+ Add Player</button>
         </div>
@@ -195,7 +188,6 @@
             <button class="btn-calc" onclick="calculate()">Calculate Payouts</button>
             <button class="btn-reset" onclick="reset()">Reset</button>
         </div>
-
         <div id="errorBox">
             <div class="error-title">❌ Totals do not match</div>
             <div class="stat-container">
@@ -206,16 +198,13 @@
             <div id="smartSuggestion" class="suggestion-box"></div>
         </div>
     </div>
-
     <div id="results" class="card">
         <div id="statusMessage" class="status-header status-success"></div>
         <div id="payoutList"></div>
     </div>
-
     <script>
         const STORAGE_KEY = 'chipwise_v6_1';
         window.onload = function() { loadData(); };
-
         function saveData() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let data = [];
@@ -225,7 +214,6 @@
             }
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
-
         function loadData() {
             const savedData = localStorage.getItem(STORAGE_KEY);
             const tbody = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
@@ -236,9 +224,7 @@
                 else addDefaults();
             } else addDefaults();
         }
-
         function addDefaults() { addPlayer(); addPlayer(); addPlayer(); addPlayer(); }
-
         function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
@@ -250,10 +236,8 @@
             `;
             saveData();
         }
-
         function removeRow(btn) { btn.parentNode.parentNode.remove(); saveData(); }
         function reset() { if(confirm("Clear all data?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
-
         function calculate() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let players = [];
@@ -261,7 +245,6 @@
             let totalCashOut = 0;
             document.getElementById("errorBox").style.display = "none";
             document.getElementById("results").style.display = "none";
-
             for (let i = 0; i < rows.length; i++) {
                 let inputs = rows[i].getElementsByTagName("input");
                 let name = inputs[0].value.trim();
@@ -275,10 +258,8 @@
                 totalCashOut += cashValue;
                 players.push({ name: name, net: net });
             }
-
             let discrepancy = totalCashOut - totalInvested;
             let statusDiv = document.getElementById("statusMessage");
-
             if (Math.abs(discrepancy) > 0.10) {
                 showError(discrepancy);
             } else {
@@ -288,7 +269,6 @@
                 let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
                 let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
                 let payouts = [];
-
                 for (let w = 0; w < winners.length; w++) {
                     if (winners[w].net === 0) continue;
                     for (let l = 0; l < losers.length; l++) {
@@ -312,18 +292,15 @@
                     winner.net -= amount; loser.net += amount;
                 }
                 breakEven.forEach(p => { payouts.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`); });
-
                 document.getElementById("payoutList").innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
                 document.getElementById("results").style.display = "block";
                 document.getElementById("results").scrollIntoView({behavior: "smooth"});
             }
         }
-
         function createPayout(from, to, amount, isPerfect) {
             let perfectTag = isPerfect ? `<div class="perfect-tag">⭐ PERFECT MATCH</div>` : "";
             return `<div class="settlement-card"><div class="player-box payer"><span class="player-name">${from}</span><span class="player-label">PAYS</span></div><div class="amount-box">${perfectTag}<span class="amount-value">$${amount.toFixed(2)}</span><span class="amount-arrow">➔</span></div><div class="player-box receiver"><span class="player-name">${to}</span><span class="player-label">GETS</span></div></div>`;
         }
-
         function showError(diff) {
             let box = document.getElementById("errorBox");
             let displayMoney = document.getElementById("displayMoney");
@@ -347,7 +324,6 @@
             else { let buyins = Math.round(absDiff / 10); if (buyins > 0) msg = `💡 <strong>Hint:</strong> Looks like roughly <strong>${buyins} Buy-in(s)</strong> are off.`; else msg = `💡 <strong>Hint:</strong> Double check your total chip counts.`; }
             suggestion.innerHTML = msg;
         }
-
         function triggerConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
