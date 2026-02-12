@@ -13,39 +13,40 @@
             margin: 0 auto; 
             padding: 15px; 
             color: #333; 
-            overflow-x: hidden; /* Prevent scroll from blur scaling */
+            overflow-x: hidden; 
         }
 
-        /* --- BACKGROUND BLUR FIX --- */
-        /* We use a pseudo-element so we can blur the BG without blurring the text */
+        /* --- BACKGROUND (Blurred via Pseudo-Element) --- */
         body::before {
             content: "";
             position: fixed;
             top: -10px; left: -10px; width: calc(100% + 20px); height: calc(100% + 20px);
-            
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
             background-size: cover;       
             background-position: center;  
             background-repeat: no-repeat;
-            
-            /* THE BLUR */
             filter: blur(4px); 
             z-index: -1;
         }
         
-        /* --- TITLE VISIBILITY --- */
+        /* --- UPDATED TITLE STYLE --- */
         h1 { 
             font-family: 'Lobster', cursive; 
-            text-align: center; 
-            margin-bottom: 5px; 
-            font-size: 4em; /* Made slightly bigger */
+            font-size: 4em; 
             color: #ffffff; 
             
-            /* Stronger shadow to pop against blur */
-            text-shadow: 
-                0 4px 6px rgba(0,0,0,0.6),  /* Deep drop shadow */
-                0 0 20px rgba(0,0,0,0.2);   /* Soft outer glow */
+            /* 1. Tighter, subtler text shadow (Decreased vignette) */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4); 
+            
+            /* 2. Background around the title */
+            background: rgba(0, 0, 0, 0.25); /* Subtle dark tint */
+            padding: 5px 40px;               /* Space around text */
+            border-radius: 50px;             /* Rounded "Pill" shape */
+            width: fit-content;              /* Box hugs the text width */
+            margin: 0 auto 5px auto;         /* Center the box */
+            backdrop-filter: blur(2px);      /* Slight frost effect on the box */
+            
             letter-spacing: 1px;
             position: relative;
             z-index: 1;
@@ -53,15 +54,15 @@
         
         .subtitle { 
             text-align: center; 
-            color: #f0f0f0; /* Brighter white for better contrast */
+            color: #f0f0f0; 
             font-size: 1.1em; 
             margin-bottom: 25px; 
             font-weight: 500; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Added shadow to subtitle too */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6); 
         }
         
         .card { 
-            background: rgba(255, 255, 255, 0.96); /* Less transparent to hide busy blur */
+            background: rgba(255, 255, 255, 0.96); 
             padding: 15px;
             border-radius: 12px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.25); 
@@ -188,7 +189,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v4';
+        const STORAGE_KEY = 'chipwise_v3_2';
         window.onload = function() { loadData(); };
 
         function saveData() {
