@@ -13,31 +13,40 @@
             margin: 0 auto; 
             padding: 20px; 
             color: #333; 
+            overflow-x: hidden; /* Prevents scrollbars caused by blur edges */
+        }
+
+        /* --- 1. GLOBAL BACKGROUND BLUR (Restored from v3.2) --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10px; left: -10px; 
+            width: calc(100% + 20px); 
+            height: calc(100% + 20px);
             
-            /* Sharp, High-Quality Background */
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
             background-size: cover;       
             background-position: center;  
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            
+            /* The Soft Blur you liked */
+            filter: blur(4px); 
+            z-index: -1;
         }
 
-        /* --- THE APPLE GLASS HEADER --- */
+        /* --- 2. GLASS HEADER (From v4) --- */
         .glass-header {
             text-align: center;
-            /* The Glass Effect */
-            background: rgba(255, 255, 255, 0.15); /* Low opacity white */
-            backdrop-filter: blur(15px);           /* The Frost */
-            -webkit-backdrop-filter: blur(15px);   /* Safari support */
-            
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle edge */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft depth */
-            
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             border-radius: 24px;
             padding: 20px 30px;
             width: fit-content;
-            margin: 0 auto 30px auto; /* Centered */
+            margin: 0 auto 30px auto;
         }
 
         h1 { 
@@ -58,17 +67,17 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
-        /* --- MAIN CARD --- */
+        /* --- 3. GLASS CARD (From v4) --- */
         .card { 
-            /* Slight transparency to blend better with the glass theme */
-            background: rgba(255, 255, 255, 0.95); 
+            /* White tint to stand out against the blurred background */
+            background: rgba(255, 255, 255, 0.92); 
             padding: 15px;
             border-radius: 16px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25); 
             margin-bottom: 20px; 
             position: relative; 
             z-index: 2; 
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
         
         /* --- TABLE STYLES --- */
@@ -192,7 +201,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v4';
+        const STORAGE_KEY = 'chipwise_v5';
         window.onload = function() { loadData(); };
 
         function saveData() {
