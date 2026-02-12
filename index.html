@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Night Ledger - v10 Focus</title>
+    <title>Poker Night Ledger - Hero Edition</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; color: #333; }
         h1 { text-align: center; margin-bottom: 5px; }
@@ -28,32 +28,59 @@
         .btn-reset { background-color: #ffc107; color: #333; }
         .delete-btn { background: none; color: #ff4d4d; font-size: 18px; padding: 0 10px; cursor: pointer; }
         
-        /* Results */
+        /* --- RESULTS SECTION STYLES --- */
         #results { display: none; border-top: 4px solid #28a745; animation: slideUp 0.5s ease-out; }
-        .status-header { text-align: center; font-weight: bold; margin-bottom: 15px; padding: 10px; border-radius: 6px; }
+        
+        /* Status Header */
+        .status-header { text-align: center; font-weight: bold; margin-bottom: 20px; padding: 12px; border-radius: 8px; font-size: 1.1em; }
         .status-success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .transfer { padding: 12px; background: #f8f9fa; border-radius: 6px; margin-bottom: 8px; font-size: 1.05em; border-left: 4px solid #007bff; display: flex; justify-content: space-between; align-items: center; }
-        .breakeven { padding: 12px; background: #fff; border: 1px dashed #ccc; border-radius: 6px; margin-bottom: 8px; color: #666; font-style: italic; display: flex; justify-content: space-between; }
-        .highlight { font-weight: bold; color: #2e7d32; }
-        .arrow { font-weight: bold; color: #666; font-size: 1.2em; margin: 0 10px; }
-        .perfect-badge { font-size: 0.75em; background: #ffeb3b; color: #555; padding: 2px 6px; border-radius: 4px; margin-left: 10px; border: 1px solid #e6db55; }
+        
+        /* NEW HERO SETTLEMENT CARD */
+        .settlement-card {
+            background: #fff;
+            border: 2px solid #f1f3f4;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+        .settlement-card:hover { transform: translateY(-2px); border-color: #28a745; }
+        
+        .player-box { text-align: center; flex: 1; }
+        .player-name { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 4px; }
+        .player-label { font-size: 0.75em; text-transform: uppercase; font-weight: bold; padding: 3px 8px; border-radius: 10px; }
+        
+        .payer .player-label { color: #c0392b; background: #fadbd8; }
+        .receiver .player-label { color: #27ae60; background: #d5f5e3; }
+        
+        .amount-box { flex: 1.5; text-align: center; position: relative; }
+        .amount-value { font-size: 1.8em; font-weight: 800; color: #2d3436; display: block; }
+        .amount-arrow { font-size: 1.2em; color: #b2bec3; margin-top: -5px; display: block; }
+        
+        .perfect-tag { 
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            background: #f1c40f; color: #fff; font-size: 0.65em; font-weight: bold; 
+            padding: 2px 8px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-        /* --- REDESIGNED ERROR BOX --- */
+        .breakeven-card { background: #f8f9fa; color: #95a5a6; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed #ced6e0; font-style: italic; }
+
+        /* --- ERROR BOX STYLES --- */
         #errorBox { display: none; background: #fff5f5; border: 2px solid #ffcccc; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
-        
         .error-title { color: #c0392b; font-weight: bold; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        
-        /* The Hero Numbers */
         .stat-container { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; }
         .stat-money { font-size: 2em; font-weight: 800; color: #d32f2f; line-height: 1; margin-bottom: 5px; }
         .stat-label { font-size: 0.85em; color: #e74c3c; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
         .stat-chips { font-size: 1.4em; font-weight: 700; color: #2c3e50; background: #ecf0f1; display: inline-block; padding: 5px 15px; border-radius: 20px; }
-        
-        /* The Suggestion (Footer style) */
         .suggestion-box { font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #ffe6e6; padding-top: 10px; margin-top: 10px; }
-        
-        /* Confetti Canvas */
-        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+        /* --- CONFETTI Z-INDEX FIX --- */
+        /* Now set to 9999 to sit ON TOP of the cards */
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
@@ -88,27 +115,23 @@
 
         <div id="errorBox">
             <div class="error-title">❌ Totals do not match</div>
-            
             <div class="stat-container">
                 <div id="displayMoney" class="stat-money"></div>
                 <div id="displayLabel" class="stat-label"></div>
                 <div id="displayChips" class="stat-chips"></div>
             </div>
-
             <div id="smartSuggestion" class="suggestion-box"></div>
         </div>
     </div>
 
     <div id="results" class="card">
         <div id="statusMessage" class="status-header status-success"></div>
-        <h3>💰 Settlements</h3>
         <div id="payoutList"></div>
     </div>
 
     <script>
         // --- STORAGE LOGIC ---
-        const STORAGE_KEY = 'pokerLedgerData_v10';
-
+        const STORAGE_KEY = 'pokerLedgerData_v11';
         window.onload = function() { loadData(); };
 
         function saveData() {
@@ -146,10 +169,7 @@
             saveData();
         }
 
-        function removeRow(btn) {
-            btn.parentNode.parentNode.remove();
-            saveData(); 
-        }
+        function removeRow(btn) { btn.parentNode.parentNode.remove(); saveData(); }
 
         function reset() {
             if(confirm("Are you sure you want to clear all data and start over?")) {
@@ -194,11 +214,10 @@
             if (Math.abs(discrepancy) > 0.10) {
                 showError(discrepancy);
             } else {
-                statusDiv.innerHTML = "✅ Totals Match";
-                statusDiv.className = "status-header status-success";
+                statusDiv.innerHTML = "✅ All Balanced. Time to Settle Up!";
                 triggerConfetti();
                 
-                // 3. Smart Settlement (Only if balanced)
+                // 3. Smart Settlement
                 let winners = players.filter(p => p.net > 0.01).map(p => ({...p}));
                 let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
                 let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
@@ -230,21 +249,41 @@
                 }
                 // Pass 3: Break Even
                 breakEven.forEach(p => {
-                    payouts.push(`<div class='breakeven'><span><strong>${p.name}</strong></span><span>Break Even</span></div>`);
+                    payouts.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`);
                 });
 
-                document.getElementById("payoutList").innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='transfer'>No transactions needed.</div>";
+                document.getElementById("payoutList").innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
                 document.getElementById("results").style.display = "block";
                 document.getElementById("results").scrollIntoView({behavior: "smooth"});
             }
         }
 
+        // --- NEW HERO SETTLEMENT UI ---
         function createPayout(from, to, amount, isPerfect) {
-            let badge = isPerfect ? `<span class="perfect-badge">⭐ Perfect Match</span>` : "";
-            return `<div class='transfer'><span><strong>${from}</strong> <span class="arrow">➔</span> <strong>${to}</strong> ${badge}</span><span class='highlight'>$${amount.toFixed(2)}</span></div>`;
+            let perfectTag = isPerfect ? `<div class="perfect-tag">⭐ PERFECT MATCH</div>` : "";
+            
+            return `
+            <div class="settlement-card">
+                <div class="player-box payer">
+                    <span class="player-name">${from}</span>
+                    <span class="player-label">PAYS</span>
+                </div>
+                
+                <div class="amount-box">
+                    ${perfectTag}
+                    <span class="amount-value">$${amount.toFixed(2)}</span>
+                    <span class="amount-arrow">➔</span>
+                </div>
+
+                <div class="player-box receiver">
+                    <span class="player-name">${to}</span>
+                    <span class="player-label">GETS</span>
+                </div>
+            </div>
+            `;
         }
 
-        // --- NEW FOCUSED ERROR LOGIC ---
+        // --- ERROR UI ---
         function showError(diff) {
             let box = document.getElementById("errorBox");
             let displayMoney = document.getElementById("displayMoney");
@@ -253,23 +292,19 @@
             let suggestion = document.getElementById("smartSuggestion");
             
             box.style.display = "block";
-            
-            // Calculations
             let chipCount = diff / 0.25;
             let absChips = Math.abs(chipCount);
             let diffStr = Math.abs(diff).toFixed(2);
             let isPositive = diff > 0;
             
-            // 1. Fill The Hero Stats
             displayMoney.innerText = `$${diffStr}`;
-            displayMoney.style.color = isPositive ? "#27ae60" : "#d32f2f"; // Green if extra, Red if missing
+            displayMoney.style.color = isPositive ? "#27ae60" : "#d32f2f";
             
             displayLabel.innerText = isPositive ? "Extra Money (+)" : "Missing Money (-)";
             displayLabel.style.color = isPositive ? "#27ae60" : "#d32f2f";
 
             displayChips.innerText = `≈ ${absChips} Chips`;
 
-            // 2. Detective Logic (Footer)
             let msg = "";
             let absDiff = Math.abs(diff);
 
@@ -285,6 +320,7 @@
             suggestion.innerHTML = msg;
         }
 
+        // --- CONFETTI (Now with Z-Index 9999) ---
         function triggerConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -292,7 +328,7 @@
             canvas.height = window.innerHeight;
             const particles = [];
             const colors = ['#28a745', '#007bff', '#ffc107', '#dc3545'];
-            for (let i = 0; i < 100; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height, color: colors[Math.floor(Math.random() * colors.length)], size: Math.random() * 8 + 4, speed: Math.random() * 5 + 2, wobble: Math.random() * 2 * Math.PI });
+            for (let i = 0; i < 150; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height, color: colors[Math.floor(Math.random() * colors.length)], size: Math.random() * 8 + 4, speed: Math.random() * 5 + 2, wobble: Math.random() * 2 * Math.PI });
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 let active = false;
