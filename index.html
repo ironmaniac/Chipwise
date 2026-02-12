@@ -274,7 +274,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v8';
+        const STORAGE_KEY = 'chipwise_v12_squad';
         window.onload = function() { loadData(); };
 
         function saveData() {
@@ -298,8 +298,12 @@
             } else addDefaults();
         }
 
-        function addDefaults() { addPlayer(); addPlayer(); addPlayer(); addPlayer(); }
-
+        function addDefaults() {
+            // Sorted Alphabetically (Numbers first)
+            const squad = ["4FT", "Aashu", "Appu", "Bunty", "Mad", "Ravi", "Rohit", "Teja"];
+            squad.forEach(name => addPlayer(name));
+        }
+        
         function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
