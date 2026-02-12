@@ -578,18 +578,30 @@ ctx.fillRect(0, 0, width, height);
                 btn.innerText = originalText;
                 btn.style.opacity = "1";
 
+                        // Get current date and time (e.g., "Oct 24, 8:30 PM")
+                const now = new Date();
+                const timestamp = now.toLocaleString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: 'numeric', 
+                    minute: '2-digit', 
+                    hour12: true 
+                });
+
+                const shareText = `Chipwise Payouts - ${timestamp} ♠️♥️`;
+
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     try {
                         await navigator.share({
-                            files: [file], title: 'Chipwise Settlement', text: 'Payouts! ♠️♥️'
+                            files: [file], title: 'Chipwise Settlement', text: shareText
                         });
                     } catch (err) { console.log("Share cancelled", err); }
                 } else {
                     const link = document.createElement('a');
-                    link.download = 'chipwise_payouts.png';
+                    link.download = `chipwise_payouts_${now.toLocaleDateString().replace(/\//g, '-')}.png`;
                     link.href = canvas.toDataURL();
                     link.click();
-                    alert("Image saved to device!");
+                    alert(`Image saved!\nGenerated on: ${timestamp}`);
                 }
             });
         }
