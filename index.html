@@ -11,64 +11,64 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             max-width: 600px; 
             margin: 0 auto; 
-            padding: 15px; 
+            padding: 20px; 
             color: #333; 
-            overflow-x: hidden; 
-        }
-
-        /* --- BACKGROUND (Blurred via Pseudo-Element) --- */
-        body::before {
-            content: "";
-            position: fixed;
-            top: -10px; left: -10px; width: calc(100% + 20px); height: calc(100% + 20px);
+            
+            /* Sharp, High-Quality Background */
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
             background-size: cover;       
             background-position: center;  
             background-repeat: no-repeat;
-            filter: blur(4px); 
-            z-index: -1;
+            background-attachment: fixed;
         }
-        
-        /* --- UPDATED TITLE STYLE --- */
+
+        /* --- THE APPLE GLASS HEADER --- */
+        .glass-header {
+            text-align: center;
+            /* The Glass Effect */
+            background: rgba(255, 255, 255, 0.15); /* Low opacity white */
+            backdrop-filter: blur(15px);           /* The Frost */
+            -webkit-backdrop-filter: blur(15px);   /* Safari support */
+            
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle edge */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft depth */
+            
+            border-radius: 24px;
+            padding: 20px 30px;
+            width: fit-content;
+            margin: 0 auto 30px auto; /* Centered */
+        }
+
         h1 { 
             font-family: 'Lobster', cursive; 
-            font-size: 4em; 
+            margin: 0; 
+            font-size: 3.8em; 
             color: #ffffff; 
-            
-            /* 1. Tighter, subtler text shadow (Decreased vignette) */
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4); 
-            
-            /* 2. Background around the title */
-            background: rgba(0, 0, 0, 0.25); /* Subtle dark tint */
-            padding: 5px 40px;               /* Space around text */
-            border-radius: 50px;             /* Rounded "Pill" shape */
-            width: fit-content;              /* Box hugs the text width */
-            margin: 0 auto 5px auto;         /* Center the box */
-            backdrop-filter: blur(2px);      /* Slight frost effect on the box */
-            
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
             letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
+            line-height: 1.1;
         }
         
         .subtitle { 
-            text-align: center; 
-            color: #f0f0f0; 
+            color: rgba(255, 255, 255, 0.9); 
             font-size: 1.1em; 
-            margin-bottom: 25px; 
             font-weight: 500; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6); 
+            margin-top: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         
+        /* --- MAIN CARD --- */
         .card { 
-            background: rgba(255, 255, 255, 0.96); 
+            /* Slight transparency to blend better with the glass theme */
+            background: rgba(255, 255, 255, 0.95); 
             padding: 15px;
-            border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25); 
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
             margin-bottom: 20px; 
             position: relative; 
             z-index: 2; 
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
         /* --- TABLE STYLES --- */
@@ -91,16 +91,16 @@
         .col-del { text-align: center; width: 30px; }
 
         /* Inputs */
-        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
-        input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; text-align: center; box-sizing: border-box; }
-        input:focus { outline: none; border-color: #007bff; background: #f0f8ff; }
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #f8f9fa; }
+        input[type="number"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; box-sizing: border-box; background: #f8f9fa; }
+        input:focus { outline: none; border-color: #007bff; background: #fff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
 
         /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: opacity 0.2s; }
-        button:hover { opacity: 0.9; }
+        button { flex: 1; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: opacity 0.2s, transform 0.1s; }
+        button:active { transform: scale(0.98); }
         .btn-add { background-color: #e3f2fd; color: #007bff; }
-        .btn-calc { background-color: #28a745; color: white; box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3); }
+        .btn-calc { background-color: #28a745; color: white; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2); }
         .btn-reset { background-color: #ffc107; color: #333; }
         
         .delete-btn { 
@@ -116,7 +116,7 @@
         
         .settlement-card {
             background: #fff; border: 2px solid #f1f3f4; border-radius: 12px; padding: 15px; margin-bottom: 15px;
-            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             transition: transform 0.2s;
         }
         .settlement-card:hover { transform: translateY(-2px); border-color: #28a745; }
@@ -148,8 +148,11 @@
 </head>
 <body>
     <canvas id="confetti-canvas"></canvas>
-    <h1>Chipwise</h1>
-    <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
+    
+    <div class="glass-header">
+        <h1>Chipwise</h1>
+        <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
+    </div>
 
     <div class="card">
         <table id="playerTable">
@@ -189,7 +192,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v3_2';
+        const STORAGE_KEY = 'chipwise_v4';
         window.onload = function() { loadData(); };
 
         function saveData() {
