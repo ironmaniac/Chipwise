@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     
     <style>
-        /* --- GLOBAL RESETS (Crucial for fixing white borders) --- */
+        /* --- GLOBAL RESETS --- */
         * { box-sizing: border-box; }
         
         html, body {
@@ -15,19 +15,20 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden; 
         }
+
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             color: #333; 
-            padding: 20px; /* Padding for content only */
-            background-color: #1a2639; /* Fallback background color */
+            padding: 20px; 
+            background-color: #1a2639; 
         }
-        /* --- 1. FIXED BACKGROUND (No White Edges) --- */
+
+        /* --- 1. FIXED BACKGROUND --- */
         body::before {
             content: "";
             position: fixed;
-            /* Dramatically oversize the background to completely hide blur edges */
             top: -50px; 
             left: -50px; 
             width: calc(100% + 100px); 
@@ -39,12 +40,11 @@
             background-position: center;  
             background-repeat: no-repeat;
             
-            filter: blur(4px); 
+            filter: blur(6px); 
             z-index: -1;
-            
-            /* Prevent any gaps */
             transform: scale(1.1);
         }
+
         /* --- 2. GLASS HEADER --- */
         .glass-header {
             text-align: center;
@@ -55,10 +55,10 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             border-radius: 24px;
             padding: 20px 30px;
-            width: fit-content;
+            width: 70%;
             margin: 0 auto 30px auto;
         }
-        /* --- 3. REFINED TITLE SHADOW --- */
+
         h1 { 
             font-family: 'Lobster', cursive; 
             margin: 0; 
@@ -87,7 +87,7 @@
             position: relative; 
             z-index: 2; 
             border: 1px solid rgba(255, 255, 255, 0.6);
-            max-width: 600px; /* Ensure card doesn't stretch too wide on desktop */
+            max-width: 600px; 
             margin-left: auto;
             margin-right: auto;
         }
@@ -106,26 +106,90 @@
         }
         
         td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
+
         .col-player { text-align: left; width: auto; }
         .col-num { text-align: center; width: 1%; }
         .col-del { text-align: center; width: 30px; }
+
         /* Inputs */
         input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #f8f9fa; }
         input[type="number"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; box-sizing: border-box; background: #f8f9fa; }
         input:focus { outline: none; border-color: #007bff; background: #fff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
-        /* Buttons */
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: opacity 0.2s, transform 0.1s; }
-        button:active { transform: scale(0.98); }
-        .btn-add { background-color: #e3f2fd; color: #007bff; }
-        .btn-calc { background-color: #28a745; color: white; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2); }
-        .btn-reset { background-color: #ffc107; color: #333; }
+
+        /* --- NEW TINTED GLASS BUTTONS --- */
+        .btn-group { display: flex; gap: 12px; margin-top: 20px; }
         
+        button { 
+            flex: 1; 
+            padding: 14px; 
+            border-radius: 16px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 16px; 
+            color: #444; /* Darker text for glass readability */
+            
+            /* Glass Core Logic */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Soft shadow */
+            
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 1. Add Player (Blue Tint) */
+        .btn-add { 
+            background: rgba(33, 150, 243, 0.85); /* Very transparent blue */
+            color: white;
+        }
+        /* Hover Effect: Fills with color 
+        .btn-add:hover { 
+            background: rgba(33, 150, 243, 0.85); 
+            color: white;
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }*/
+
+        /* 2. Calculate (Green Tint) */
+        .btn-calc { 
+            background: rgba(76, 175, 80, 0.85); 
+            color: white;
+        }
+        /* Hover Effect 
+        .btn-calc:hover { 
+            background: rgba(76, 175, 80, 0.85); 
+            color: white;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }*/
+
+        /* 3. Reset (Amber Tint) */
+        .btn-reset { 
+            background: rgba(255, 193, 7, 0.85); /* Very transparent amber */
+            color: white;
+        }
+        /* Hover Effect 
+        .btn-reset:hover { 
+            background: rgba(255, 193, 7, 0.85); 
+            color: white;
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }*/
+        
+        button:active { transform: scale(0.96); }
+
+        /* Delete Button */
         .delete-btn { 
             background: none; color: #ff4d4d; font-size: 20px; padding: 0; width: 30px; height: 30px;
             display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%;
+            box-shadow: none; border: none; backdrop-filter: none;
         }
-        .delete-btn:hover { background-color: #fff0f0; }
+        .delete-btn:hover { background-color: #fff0f0; transform: none; box-shadow: none; color: #d32f2f; }
         
         /* --- RESULTS SECTION --- */
         #results { display: none; border-top: 4px solid #28a745; animation: slideUp 0.5s ease-out; }
@@ -150,6 +214,7 @@
         .amount-arrow { font-size: 1.2em; color: #b2bec3; margin-top: -5px; display: block; }
         .perfect-tag { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #fff; font-size: 0.65em; font-weight: bold; padding: 2px 8px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .breakeven-card { background: #f8f9fa; color: #95a5a6; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed #ced6e0; font-style: italic; }
+
         /* --- ERROR BOX --- */
         #errorBox { display: none; background: #fff5f5; border: 2px solid #ffcccc; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
         .error-title { color: #c0392b; font-weight: bold; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
@@ -158,6 +223,7 @@
         .stat-label { font-size: 0.85em; color: #e74c3c; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
         .stat-chips { font-size: 1.4em; font-weight: 700; color: #2c3e50; background: #ecf0f1; display: inline-block; padding: 5px 15px; border-radius: 20px; }
         .suggestion-box { font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #ffe6e6; padding-top: 10px; margin-top: 10px; }
+
         #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
@@ -169,6 +235,7 @@
         <h1>Chipwise</h1>
         <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
     </div>
+
     <div class="card">
         <table id="playerTable">
             <thead>
@@ -181,6 +248,7 @@
             </thead>
             <tbody></tbody>
         </table>
+
         <div class="btn-group">
             <button class="btn-add" onclick="addPlayer()">+ Add Player</button>
         </div>
@@ -188,6 +256,7 @@
             <button class="btn-calc" onclick="calculate()">Calculate Payouts</button>
             <button class="btn-reset" onclick="reset()">Reset</button>
         </div>
+
         <div id="errorBox">
             <div class="error-title">❌ Totals do not match</div>
             <div class="stat-container">
@@ -198,13 +267,16 @@
             <div id="smartSuggestion" class="suggestion-box"></div>
         </div>
     </div>
+
     <div id="results" class="card">
         <div id="statusMessage" class="status-header status-success"></div>
         <div id="payoutList"></div>
     </div>
+
     <script>
-        const STORAGE_KEY = 'chipwise_v6_1';
+        const STORAGE_KEY = 'chipwise_v8';
         window.onload = function() { loadData(); };
+
         function saveData() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let data = [];
@@ -214,6 +286,7 @@
             }
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
+
         function loadData() {
             const savedData = localStorage.getItem(STORAGE_KEY);
             const tbody = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
@@ -224,7 +297,9 @@
                 else addDefaults();
             } else addDefaults();
         }
+
         function addDefaults() { addPlayer(); addPlayer(); addPlayer(); addPlayer(); }
+
         function addPlayer(name = "", buyins = "1", chips = "") {
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
@@ -236,8 +311,10 @@
             `;
             saveData();
         }
+
         function removeRow(btn) { btn.parentNode.parentNode.remove(); saveData(); }
         function reset() { if(confirm("Clear all data?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+
         function calculate() {
             const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
             let players = [];
@@ -245,6 +322,7 @@
             let totalCashOut = 0;
             document.getElementById("errorBox").style.display = "none";
             document.getElementById("results").style.display = "none";
+
             for (let i = 0; i < rows.length; i++) {
                 let inputs = rows[i].getElementsByTagName("input");
                 let name = inputs[0].value.trim();
@@ -258,8 +336,10 @@
                 totalCashOut += cashValue;
                 players.push({ name: name, net: net });
             }
+
             let discrepancy = totalCashOut - totalInvested;
             let statusDiv = document.getElementById("statusMessage");
+
             if (Math.abs(discrepancy) > 0.10) {
                 showError(discrepancy);
             } else {
@@ -269,6 +349,7 @@
                 let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
                 let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
                 let payouts = [];
+
                 for (let w = 0; w < winners.length; w++) {
                     if (winners[w].net === 0) continue;
                     for (let l = 0; l < losers.length; l++) {
@@ -292,15 +373,18 @@
                     winner.net -= amount; loser.net += amount;
                 }
                 breakEven.forEach(p => { payouts.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`); });
+
                 document.getElementById("payoutList").innerHTML = payouts.length > 0 ? payouts.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
                 document.getElementById("results").style.display = "block";
                 document.getElementById("results").scrollIntoView({behavior: "smooth"});
             }
         }
+
         function createPayout(from, to, amount, isPerfect) {
             let perfectTag = isPerfect ? `<div class="perfect-tag">⭐ PERFECT MATCH</div>` : "";
             return `<div class="settlement-card"><div class="player-box payer"><span class="player-name">${from}</span><span class="player-label">PAYS</span></div><div class="amount-box">${perfectTag}<span class="amount-value">$${amount.toFixed(2)}</span><span class="amount-arrow">➔</span></div><div class="player-box receiver"><span class="player-name">${to}</span><span class="player-label">GETS</span></div></div>`;
         }
+
         function showError(diff) {
             let box = document.getElementById("errorBox");
             let displayMoney = document.getElementById("displayMoney");
@@ -324,18 +408,65 @@
             else { let buyins = Math.round(absDiff / 10); if (buyins > 0) msg = `💡 <strong>Hint:</strong> Looks like roughly <strong>${buyins} Buy-in(s)</strong> are off.`; else msg = `💡 <strong>Hint:</strong> Double check your total chip counts.`; }
             suggestion.innerHTML = msg;
         }
+
+        // --- NEW FASTER & BRIGHTER CONFETTI ENGINE ---
         function triggerConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+
             const particles = [];
-            const colors = ['#28a745', '#007bff', '#ffc107', '#dc3545'];
-            for (let i = 0; i < 150; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height, color: colors[Math.floor(Math.random() * colors.length)], size: Math.random() * 8 + 4, speed: Math.random() * 5 + 2, wobble: Math.random() * 2 * Math.PI });
+            // Added new vibrant colors to the existing list
+            const colors = [
+                '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548', '#FFD700', '#C0C0C0',
+                '#FF1493', '#00FF7F', '#FF69B4', '#1E90FF', '#FFFF00', '#00FFFF', '#FF4500', '#ADFF2F', '#FF00FF', '#7FFF00', '#8A2BE2', '#FFD700', '#00CED1', '#FF6347', '#32CD32', '#9370DB', '#40E0D0'
+            ];
+            
+            for (let i = 0; i < 200; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 4, // Size
+                    d: Math.random() * 20 + 10, // Density
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.floor(Math.random() * 10) - 10,
+                    tiltAngle: 0,
+                    tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
+                    shape: Math.random() < 0.6 ? 'square' : 'circle' // 60% Paper, 40% Dots/Glitter
+                });
+            }
+
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 let active = false;
-                particles.forEach(p => { p.y += p.speed; p.wobble += 0.05; p.x += Math.sin(p.wobble) * 2; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); if (p.y < canvas.height) active = true; });
+                
+                particles.forEach((p) => {
+                    p.tiltAngle += p.tiltAngleIncremental;
+                    
+                    // FASTER Fall physics (0.9 instead of 0.5)
+                    p.y += (Math.cos(p.d) + 1 + p.r / 2) * 0.9;
+                    
+                    // Sway physics
+                    p.x += Math.sin(p.tiltAngle);
+                    
+                    if (p.y < canvas.height) active = true;
+                    
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    
+                    if (p.shape === 'square') {
+                        // 3D Flip Effect
+                        let width = p.r * 2;
+                        let height = p.r * 2 * Math.abs(Math.cos(p.tiltAngle)); 
+                        ctx.fillRect(p.x, p.y, width, height);
+                    } else {
+                        // Standard Confetti Dot
+                        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                });
+
                 if (active) requestAnimationFrame(animate);
             }
             animate();
