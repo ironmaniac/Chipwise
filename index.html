@@ -11,11 +11,16 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             max-width: 600px; 
             margin: 0 auto; 
-            padding: 15px; /* Slightly reduced padding for mobile space */
+            padding: 15px; 
+            
+            /* --- BACKGROUND FIXES --- */
             background-image: url('poker_bg.jpg'); 
             background-color: #1a2639; 
-            background-size: 400px; 
-            background-repeat: repeat;
+            background-size: cover;       /* Stretch to cover entire screen */
+            background-position: center;  /* Center the image */
+            background-repeat: no-repeat; /* Do not tile/duplicate */
+            background-attachment: fixed; /* Keep background fixed while scrolling */
+            
             color: #333; 
         }
         
@@ -40,7 +45,7 @@
         
         .card { 
             background: rgba(255, 255, 255, 0.95); 
-            padding: 15px; /* Reduced padding inside card to maximize width */
+            padding: 15px;
             border-radius: 12px; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
             margin-bottom: 20px; 
@@ -48,16 +53,16 @@
             z-index: 2; 
         }
         
-        /* --- TABLE FIXES --- */
+        /* --- TABLE STYLES --- */
         table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         
         th { 
-            font-size: 0.75em; /* Slightly smaller text for mobile fitting */
+            font-size: 0.75em;
             text-transform: uppercase; 
             color: #888; 
             border-bottom: 2px solid #eee; 
-            padding: 10px 4px; /* Tighter padding */
-            white-space: nowrap; /* FORCE ONE LINE */
+            padding: 10px 4px;
+            white-space: nowrap;
             vertical-align: bottom;
         }
         
@@ -67,10 +72,9 @@
             vertical-align: middle;
         }
 
-        /* Column Specifics */
-        .col-player { text-align: left; width: auto; } /* Takes remaining space */
-        .col-num { text-align: center; width: 1%; } /* Shrinks to fit content */
-        .col-del { text-align: center; width: 30px; } /* Fixed small width */
+        .col-player { text-align: left; width: auto; }
+        .col-num { text-align: center; width: 1%; }
+        .col-del { text-align: center; width: 30px; }
 
         /* Inputs */
         input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
@@ -85,7 +89,6 @@
         .btn-calc { background-color: #28a745; color: white; box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3); }
         .btn-reset { background-color: #ffc107; color: #333; }
         
-        /* Delete Button - Tighter style */
         .delete-btn { 
             background: none; 
             color: #ff4d4d; 
