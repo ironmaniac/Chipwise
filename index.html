@@ -1,146 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Chipwise</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        /* --- GLOBAL RESETS --- */
-        * { box-sizing: border-box; }
-        
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden; 
-        }
+      /* --- GLOBAL RESETS --- */
+      * {
+        box-sizing: border-box;
+      }
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            color: #333; 
-            padding: 20px; 
-            background-color: #1a2639; 
-        }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
 
-        /* --- 1. FIXED BACKGROUND --- */
-        body::before {
-            content: "";
-            position: fixed;
-            top: -50px; 
-            left: -50px; 
-            width: calc(100% + 100px); 
-            height: calc(100% + 100px);
-            /* Using the poker_bg.jpg referenced in CSS for consistency */
-            background-image: url('poker_bg.jpg'); 
-            background-color: #1a2639; 
-            background-size: cover;       
-            background-position: center;  
-            background-repeat: no-repeat;
-            filter: blur(4px); 
-            z-index: -1;
-            transform: scale(1.1);
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        color: #333;
+        padding: 20px;
+        background-color: #1a2639;
+      }
 
-        /* --- 2. GLASS HEADER --- */
-        .glass-header {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.482);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            border-radius: 24px;
-            padding: 20px 30px;
-            width: fit-content;
-            margin: 0 auto 30px auto;
-        }
+      /* --- 1. FIXED BACKGROUND --- */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50px;
+        left: -50px;
+        width: calc(100% + 100px);
+        height: calc(100% + 100px);
+        /* Using the poker_bg.jpg referenced in CSS for consistency */
+        background-image: url("poker_bg.jpg");
+        background-color: #1a2639;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: blur(4px);
+        z-index: -1;
+        transform: scale(1.1);
+      }
 
-        h1 { 
-            font-family: 'Lobster', cursive; 
-            margin: 0; 
-            font-size: 3.8em; 
-            color: #ffffff; 
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2); 
-            letter-spacing: 1px;
-            line-height: 1.1;
-        }
-        
-        .subtitle { 
-            color: rgba(255, 255, 255, 0.95); 
-            font-size: 1.1em; 
-            font-weight: 500; 
-            margin-top: 5px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-        
-        /* --- MAIN CARD --- */
-        .card { 
-            background: rgba(255, 255, 255, 0.92); 
-            padding: 15px;
-            border-radius: 16px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.25); 
-            margin-bottom: 20px; 
-            position: relative; 
-            z-index: 2; 
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            max-width: 600px; 
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* --- TABLE STYLES --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        
-        th { 
-            font-size: 0.75em;
-            text-transform: uppercase; 
-            color: #888; 
-            border-bottom: 2px solid #eee; 
-            padding: 10px 4px;
-            white-space: nowrap;
-            vertical-align: bottom;
-        }
-        
-        td { padding: 8px 4px; border-bottom: 1px solid #eee; vertical-align: middle; }
+      /* --- 2. GLASS HEADER --- */
+      .glass-header {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.482);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        border-radius: 24px;
+        padding: 20px 30px;
+        width: fit-content;
+        margin: 0 auto 30px auto;
+      }
 
-        .col-player { text-align: left; width: auto; }
-        .col-num { text-align: center; width: 1%; }
-        .col-del { text-align: center; width: 30px; }
+      h1 {
+        font-family: "Lobster", cursive;
+        margin: 0;
+        font-size: 3.8em;
+        color: #ffffff;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        letter-spacing: 1px;
+        line-height: 1.1;
+      }
 
-        /* Inputs */
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #f8f9fa; }
-        input[type="number"] { width: 100%; padding: 12px; border: 1px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; box-sizing: border-box; background: #f8f9fa; }
-        input:focus { outline: none; border-color: #007bff; background: #fff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
+      .subtitle {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.1em;
+        font-weight: 500;
+        margin-top: 5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
 
-        /* --- GLASS BUTTONS --- */
-        .btn-group { display: flex; gap: 12px; margin-top: 20px; }
-        
-        button { 
-            flex: 1; 
-            padding: 14px; 
-            border-radius: 16px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            font-size: 16px; 
-            color: #444;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
+      /* --- MAIN CARD --- */
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 15px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-        /* 1. Add Player (Blue Tint) */
-        .btn-add { 
-            background: rgba(33, 150, 243, 0.85); /* Very transparent blue */
-            color: white;
-        }
-        /* Hover Effect: Fills with color 
+      /* --- TABLE STYLES --- */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 5px;
+      }
+
+      th {
+        font-size: 0.75em;
+        text-transform: uppercase;
+        color: #888;
+        border-bottom: 2px solid #eee;
+        padding: 10px 4px;
+        white-space: nowrap;
+        vertical-align: bottom;
+      }
+
+      td {
+        padding: 8px 4px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+      }
+
+      .col-player {
+        text-align: left;
+        width: auto;
+      }
+      .col-num {
+        text-align: center;
+        width: 1%;
+      }
+      .col-del {
+        text-align: center;
+        width: 30px;
+      }
+
+      /* Inputs */
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+        background: #f8f9fa;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        font-size: 16px;
+        text-align: center;
+        box-sizing: border-box;
+        background: #f8f9fa;
+      }
+      input:focus {
+        outline: none;
+        border-color: #007bff;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+
+      /* --- GLASS BUTTONS --- */
+      .btn-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      button {
+        flex: 1;
+        padding: 14px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 16px;
+        color: #444;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 1. Add Player (Blue Tint) */
+      .btn-add {
+        background: rgba(33, 150, 243, 0.85); /* Very transparent blue */
+        color: white;
+      }
+      /* Hover Effect: Fills with color 
         .btn-add:hover { 
             background: rgba(33, 150, 243, 0.85); 
             color: white;
@@ -149,12 +203,12 @@
             transform: translateY(-2px);
         }*/
 
-        /* 2. Calculate (Green Tint) */
-        .btn-calc { 
-            background: rgba(76, 175, 80, 0.85); 
-            color: white;
-        }
-        /* Hover Effect 
+      /* 2. Calculate (Green Tint) */
+      .btn-calc {
+        background: rgba(76, 175, 80, 0.85);
+        color: white;
+      }
+      /* Hover Effect 
         .btn-calc:hover { 
             background: rgba(76, 175, 80, 0.85); 
             color: white;
@@ -163,12 +217,12 @@
             transform: translateY(-2px);
         }*/
 
-        /* 3. Reset (Amber Tint) */
-        .btn-reset { 
-            background: rgba(255, 193, 7, 0.85); /* Very transparent amber */
-            color: white;
-        }
-        /* Hover Effect 
+      /* 3. Reset (Amber Tint) */
+      .btn-reset {
+        background: rgba(255, 193, 7, 0.85); /* Very transparent amber */
+        color: white;
+      }
+      /* Hover Effect 
         .btn-reset:hover { 
             background: rgba(255, 193, 7, 0.85); 
             color: white;
@@ -177,370 +231,648 @@
             transform: translateY(-2px);
         }*/
 
-        /* SHARE BUTTON (Purple) */
-        .btn-share { 
-            background: rgba(156, 39, 176, 0.15); 
-            color: #9c27b0; 
-            margin-top: 15px; 
-            width: 100%; 
-            display: none; 
+      /* SHARE BUTTON (Purple) */
+      .btn-share {
+        background: rgba(156, 39, 176, 0.15);
+        color: #9c27b0;
+        margin-top: 15px;
+        width: 100%;
+        display: none;
+      }
+      .btn-share:hover {
+        background: rgba(156, 39, 176, 0.85);
+        color: white;
+        box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: scale(0.96);
+      }
+
+      .delete-btn {
+        background: none;
+        color: #ff4d4d;
+        font-size: 20px;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: none;
+        border: none;
+        backdrop-filter: none;
+      }
+      .delete-btn:hover {
+        background-color: #fff0f0;
+        transform: none;
+        box-shadow: none;
+        color: #d32f2f;
+      }
+
+      /* --- RESULTS SECTION --- */
+      #results {
+        display: none;
+        border-top: 4px solid #28a745;
+        animation: slideUp 0.5s ease-out;
+      }
+      .status-header {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 1.1em;
+      }
+      .status-success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+      }
+
+      .settlement-card {
+        background: #fff;
+        border: 2px solid #f1f3f4;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s;
+      }
+      .settlement-card:hover {
+        transform: translateY(-2px);
+        border-color: #28a745;
+      }
+
+      .player-box {
+        text-align: center;
+        flex: 1;
+      }
+      .player-name {
+        font-weight: bold;
+        font-size: 1.1em;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .player-label {
+        font-size: 0.75em;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 10px;
+      }
+      .payer .player-label {
+        color: #c0392b;
+        background: #fadbd8;
+      }
+      .receiver .player-label {
+        color: #27ae60;
+        background: #d5f5e3;
+      }
+
+      .amount-box {
+        flex: 1.5;
+        text-align: center;
+        position: relative;
+      }
+      .amount-value {
+        font-size: 1.8em;
+        font-weight: 800;
+        color: #2d3436;
+        display: block;
+      }
+      .amount-arrow {
+        font-size: 1.2em;
+        color: #b2bec3;
+        margin-top: -5px;
+        display: block;
+      }
+      .perfect-tag {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #f1c40f;
+        color: #fff;
+        font-size: 0.65em;
+        font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .breakeven-card {
+        background: #f8f9fa;
+        color: #95a5a6;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 10px;
+        border: 1px dashed #ced6e0;
+        font-style: italic;
+      }
+
+      /* --- ERROR BOX --- */
+      #errorBox {
+        display: none;
+        background: #fff5f5;
+        border: 2px solid #ffcccc;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      .error-title {
+        color: #c0392b;
+        font-weight: bold;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+      }
+      .stat-container {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 15px;
+      }
+      .stat-money {
+        font-size: 2em;
+        font-weight: 800;
+        color: #d32f2f;
+        line-height: 1;
+        margin-bottom: 5px;
+      }
+      .stat-label {
+        font-size: 0.85em;
+        color: #e74c3c;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .stat-chips {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #2c3e50;
+        background: #ecf0f1;
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+      }
+      .suggestion-box {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        border-top: 1px solid #ffe6e6;
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+
+      #confetti-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
         }
-        .btn-share:hover { 
-            background: rgba(156, 39, 176, 0.85); 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4); 
-            border-color: rgba(255,255,255,0.6); 
-            transform: translateY(-2px); 
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
-
-        button:active { transform: scale(0.96); }
-
-        .delete-btn { background: none; color: #ff4d4d; font-size: 20px; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; box-shadow: none; border: none; backdrop-filter: none; }
-        .delete-btn:hover { background-color: #fff0f0; transform: none; box-shadow: none; color: #d32f2f; }
-        
-        /* --- RESULTS SECTION --- */
-        #results { display: none; border-top: 4px solid #28a745; animation: slideUp 0.5s ease-out; }
-        .status-header { text-align: center; font-weight: bold; margin-bottom: 20px; padding: 12px; border-radius: 8px; font-size: 1.1em; }
-        .status-success { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        
-        .settlement-card {
-            background: #fff; border: 2px solid #f1f3f4; border-radius: 12px; padding: 15px; margin-bottom: 15px;
-            display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s;
-        }
-        .settlement-card:hover { transform: translateY(-2px); border-color: #28a745; }
-        
-        .player-box { text-align: center; flex: 1; }
-        .player-name { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 4px; }
-        .player-label { font-size: 0.75em; text-transform: uppercase; font-weight: bold; padding: 3px 8px; border-radius: 10px; }
-        .payer .player-label { color: #c0392b; background: #fadbd8; }
-        .receiver .player-label { color: #27ae60; background: #d5f5e3; }
-        
-        .amount-box { flex: 1.5; text-align: center; position: relative; }
-        .amount-value { font-size: 1.8em; font-weight: 800; color: #2d3436; display: block; }
-        .amount-arrow { font-size: 1.2em; color: #b2bec3; margin-top: -5px; display: block; }
-        .perfect-tag { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: #f1c40f; color: #fff; font-size: 0.65em; font-weight: bold; padding: 2px 8px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .breakeven-card { background: #f8f9fa; color: #95a5a6; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 10px; border: 1px dashed #ced6e0; font-style: italic; }
-
-        /* --- ERROR BOX --- */
-        #errorBox { display: none; background: #fff5f5; border: 2px solid #ffcccc; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; }
-        .error-title { color: #c0392b; font-weight: bold; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        .stat-container { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        .stat-money { font-size: 2em; font-weight: 800; color: #d32f2f; line-height: 1; margin-bottom: 5px; }
-        .stat-label { font-size: 0.85em; color: #e74c3c; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
-        .stat-chips { font-size: 1.4em; font-weight: 700; color: #2c3e50; background: #ecf0f1; display: inline-block; padding: 5px 15px; border-radius: 20px; }
-        .suggestion-box { font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #ffe6e6; padding-top: 10px; margin-top: 10px; }
-
-        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <canvas id="confetti-canvas"></canvas>
-    
+
     <div class="glass-header">
-        <h1>Chipwise</h1>
-        <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
+      <h1>Chipwise</h1>
+      <div class="subtitle">1 Buy-in ($10) = 40 Chips</div>
     </div>
 
     <div class="card">
-        <table id="playerTable">
-            <thead>
-                <tr>
-                    <th class="col-player">Player</th>
-                    <th class="col-num">Buy-ins ($10)</th>
-                    <th class="col-num">End Chips</th>
-                    <th class="col-del"></th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+      <table id="playerTable">
+        <thead>
+          <tr>
+            <th class="col-player">Player</th>
+            <th class="col-num">Buy-ins ($10)</th>
+            <th class="col-num">End Chips</th>
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-        <div class="btn-group">
-            <button class="btn-add" onclick="addPlayer()">+ Add Player</button>
-        </div>
-        <div class="btn-group">
-            <button class="btn-calc" onclick="calculate()">Calculate Payouts</button>
-            <button class="btn-reset" onclick="reset()">Reset</button>
-        </div>
+      <div class="btn-group">
+        <button class="btn-add" onclick="addPlayer()">+ Add Player</button>
+      </div>
+      <div class="btn-group">
+        <button class="btn-calc" onclick="calculate()">
+          Calculate Payouts
+        </button>
+        <button class="btn-reset" onclick="reset()">Reset</button>
+      </div>
 
-        <div id="errorBox">
-            <div class="error-title">❌ Totals do not match</div>
-            <div class="stat-container">
-                <div id="displayMoney" class="stat-money"></div>
-                <div id="displayLabel" class="stat-label"></div>
-                <div id="displayChips" class="stat-chips"></div>
-            </div>
-            <div id="smartSuggestion" class="suggestion-box"></div>
+      <div id="errorBox">
+        <div class="error-title">❌ Totals do not match</div>
+        <div class="stat-container">
+          <div id="displayMoney" class="stat-money"></div>
+          <div id="displayLabel" class="stat-label"></div>
+          <div id="displayChips" class="stat-chips"></div>
         </div>
+        <div id="smartSuggestion" class="suggestion-box"></div>
+      </div>
     </div>
 
     <div id="results" class="card">
-        <div id="statusMessage" class="status-header status-success"></div>
-        <div id="payoutList"></div>
-        <button id="shareBtn" class="btn-share" onclick="generateAndShareImage()">📸 Share Results</button>
+      <div id="statusMessage" class="status-header status-success"></div>
+      <div id="payoutList"></div>
+      <button id="shareBtn" class="btn-share" onclick="generateAndShareImage()">
+        📸 Share Results
+      </button>
     </div>
 
     <script>
-        const STORAGE_KEY = 'chipwise_v20_perfect_canvas';
-        let currentPayouts = []; // Store payouts data for sharing
-        // We use the same image as CSS for consistency. Ensure this file exists next to HTML.
-        const BACKGROUND_IMAGE_URL = 'cash.jpg'; 
+      const STORAGE_KEY = "chipwise_v20_perfect_canvas";
+      let currentPayouts = []; // Store payouts data for sharing
+      // We use the same image as CSS for consistency. Ensure this file exists next to HTML.
+      const BACKGROUND_IMAGE_URL = "cash.jpg";
 
-        window.onload = function() { loadData(); };
+      window.onload = function () {
+        loadData();
+      };
 
-        function saveData() {
-            const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
-            let data = [];
-            for (let i = 0; i < rows.length; i++) {
-                let inputs = rows[i].getElementsByTagName("input");
-                data.push({ name: inputs[0].value, buyins: inputs[1].value, chips: inputs[2].value });
-            }
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      function saveData() {
+        const rows = document
+          .getElementById("playerTable")
+          .getElementsByTagName("tbody")[0].rows;
+        let data = [];
+        for (let i = 0; i < rows.length; i++) {
+          let inputs = rows[i].getElementsByTagName("input");
+          data.push({
+            name: inputs[0].value,
+            buyins: inputs[1].value,
+            chips: inputs[2].value,
+          });
         }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
 
-        function loadData() {
-            const savedData = localStorage.getItem(STORAGE_KEY);
-            const tbody = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
-            tbody.innerHTML = ""; 
-            if (savedData) {
-                const players = JSON.parse(savedData);
-                if (players.length > 0) players.forEach(p => addPlayer(p.name, p.buyins, p.chips));
-                else addDefaults();
-            } else addDefaults();
-        }
+      function loadData() {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        const tbody = document
+          .getElementById("playerTable")
+          .getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+        if (savedData) {
+          const players = JSON.parse(savedData);
+          if (players.length > 0)
+            players.forEach((p) => addPlayer(p.name, p.buyins, p.chips));
+          else addDefaults();
+        } else addDefaults();
+      }
 
-        function addDefaults() {
-            const squad = ["4FT", "Aashu", "Appu", "Bunty", "Mad", "Ravi", "Rohit", "Teja"];
-            squad.forEach(name => addPlayer(name));
-        }
+      function addDefaults() {
+        const squad = [
+          "Aashu",
+          "Appu",
+          "Bunty",
+          "Mad",
+          "Mounika",
+          "Ravi",
+          "Rohit",
+          "Teja",
+        ];
+        squad.forEach((name) => addPlayer(name));
+      }
 
-        function addPlayer(name = "", buyins = "1", chips = "") {
-            const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
+      function addPlayer(name = "", buyins = "1", chips = "") {
+        const table = document
+          .getElementById("playerTable")
+          .getElementsByTagName("tbody")[0];
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
                 <td><input type="text" placeholder="Name" value="${name}" oninput="saveData()"></td>
                 <td><input type="number" min="1" placeholder="1" value="${buyins}" oninput="saveData()"></td>
                 <td><input type="number" min="0" placeholder="0" value="${chips}" oninput="saveData()"></td>
                 <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
             `;
-            saveData();
+        saveData();
+      }
+
+      function removeRow(btn) {
+        btn.parentNode.parentNode.remove();
+        saveData();
+      }
+      function reset() {
+        if (confirm("Clear all data and reset to squad defaults?")) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      }
+
+      function calculate() {
+        const rows = document
+          .getElementById("playerTable")
+          .getElementsByTagName("tbody")[0].rows;
+        let players = [];
+        let totalInvested = 0;
+        let totalCashOut = 0;
+        currentPayouts = []; // Reset shared data
+
+        document.getElementById("errorBox").style.display = "none";
+        document.getElementById("results").style.display = "none";
+        document.getElementById("shareBtn").style.display = "none";
+
+        for (let i = 0; i < rows.length; i++) {
+          let inputs = rows[i].getElementsByTagName("input");
+          let name = inputs[0].value.trim();
+          let buyinQty = parseInt(inputs[1].value) || 0;
+          let chipCount = parseFloat(inputs[2].value) || 0;
+          if (name === "") continue;
+          let invested = buyinQty * 10;
+          let cashValue = chipCount * 0.25;
+          let net = cashValue - invested;
+          totalInvested += invested;
+          totalCashOut += cashValue;
+          players.push({ name: name, net: net });
         }
 
-        function removeRow(btn) { btn.parentNode.parentNode.remove(); saveData(); }
-        function reset() { if(confirm("Clear all data and reset to squad defaults?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+        let discrepancy = totalCashOut - totalInvested;
+        let statusDiv = document.getElementById("statusMessage");
 
-        function calculate() {
-            const rows = document.getElementById("playerTable").getElementsByTagName('tbody')[0].rows;
-            let players = [];
-            let totalInvested = 0;
-            let totalCashOut = 0;
-            currentPayouts = []; // Reset shared data
+        if (Math.abs(discrepancy) > 0.1) {
+          showError(discrepancy);
+        } else {
+          statusDiv.innerHTML = "✅ All Balanced. Time to Settle Up!";
+          triggerConfetti();
+          let winners = players
+            .filter((p) => p.net > 0.01)
+            .map((p) => ({ ...p }));
+          let losers = players
+            .filter((p) => p.net < -0.01)
+            .map((p) => ({ ...p }));
+          let breakEven = players.filter((p) => Math.abs(p.net) <= 0.01);
 
-            document.getElementById("errorBox").style.display = "none";
-            document.getElementById("results").style.display = "none";
-            document.getElementById("shareBtn").style.display = "none"; 
+          let payoutHTML = [];
 
-            for (let i = 0; i < rows.length; i++) {
-                let inputs = rows[i].getElementsByTagName("input");
-                let name = inputs[0].value.trim();
-                let buyinQty = parseInt(inputs[1].value) || 0;
-                let chipCount = parseFloat(inputs[2].value) || 0;
-                if (name === "") continue;
-                let invested = buyinQty * 10;
-                let cashValue = chipCount * 0.25;
-                let net = cashValue - invested;
-                totalInvested += invested;
-                totalCashOut += cashValue;
-                players.push({ name: name, net: net });
-            }
-
-            let discrepancy = totalCashOut - totalInvested;
-            let statusDiv = document.getElementById("statusMessage");
-
-            if (Math.abs(discrepancy) > 0.10) {
-                showError(discrepancy);
-            } else {
-                statusDiv.innerHTML = "✅ All Balanced. Time to Settle Up!";
-                triggerConfetti();
-                let winners = players.filter(p => p.net > 0.01).map(p => ({...p}));
-                let losers = players.filter(p => p.net < -0.01).map(p => ({...p}));
-                let breakEven = players.filter(p => Math.abs(p.net) <= 0.01); 
-                
-                let payoutHTML = [];
-
-                for (let w = 0; w < winners.length; w++) {
-                    if (winners[w].net === 0) continue;
-                    for (let l = 0; l < losers.length; l++) {
-                        if (losers[l].net === 0) continue;
-                        if (Math.abs(winners[w].net + losers[l].net) < 0.01) {
-                            let amt = winners[w].net;
-                            currentPayouts.push({ from: losers[l].name, to: winners[w].name, amt: amt, type: 'perfect' });
-                            payoutHTML.push(createPayout(losers[l].name, winners[w].name, amt, true));
-                            winners[w].net = 0; losers[l].net = 0;
-                        }
-                    }
-                }
-                winners.sort((a, b) => b.net - a.net);
-                losers.sort((a, b) => a.net - b.net); 
-                let wIdx = 0, lIdx = 0;
-                while (wIdx < winners.length && lIdx < losers.length) {
-                    let winner = winners[wIdx];
-                    let loser = losers[lIdx];
-                    if (winner.net < 0.01) { wIdx++; continue; }
-                    if (loser.net > -0.01) { lIdx++; continue; }
-                    let amount = Math.min(winner.net, Math.abs(loser.net));
-                    if (amount > 0.01) {
-                        currentPayouts.push({ from: loser.name, to: winner.name, amt: amount, type: 'normal' });
-                        payoutHTML.push(createPayout(loser.name, winner.name, amount, false));
-                    }
-                    winner.net -= amount; loser.net += amount;
-                }
-                breakEven.forEach(p => { 
-                    payoutHTML.push(`<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`); 
+          for (let w = 0; w < winners.length; w++) {
+            if (winners[w].net === 0) continue;
+            for (let l = 0; l < losers.length; l++) {
+              if (losers[l].net === 0) continue;
+              if (Math.abs(winners[w].net + losers[l].net) < 0.01) {
+                let amt = winners[w].net;
+                currentPayouts.push({
+                  from: losers[l].name,
+                  to: winners[w].name,
+                  amt: amt,
+                  type: "perfect",
                 });
-
-                document.getElementById("payoutList").innerHTML = payoutHTML.length > 0 ? payoutHTML.join("") : "<div class='breakeven-card'>No transactions needed.</div>";
-                document.getElementById("results").style.display = "block";
-                document.getElementById("shareBtn").style.display = "block"; 
-                document.getElementById("results").scrollIntoView({behavior: "smooth"});
+                payoutHTML.push(
+                  createPayout(losers[l].name, winners[w].name, amt, true),
+                );
+                winners[w].net = 0;
+                losers[l].net = 0;
+              }
             }
+          }
+          winners.sort((a, b) => b.net - a.net);
+          losers.sort((a, b) => a.net - b.net);
+          let wIdx = 0,
+            lIdx = 0;
+          while (wIdx < winners.length && lIdx < losers.length) {
+            let winner = winners[wIdx];
+            let loser = losers[lIdx];
+            if (winner.net < 0.01) {
+              wIdx++;
+              continue;
+            }
+            if (loser.net > -0.01) {
+              lIdx++;
+              continue;
+            }
+            let amount = Math.min(winner.net, Math.abs(loser.net));
+            if (amount > 0.01) {
+              currentPayouts.push({
+                from: loser.name,
+                to: winner.name,
+                amt: amount,
+                type: "normal",
+              });
+              payoutHTML.push(
+                createPayout(loser.name, winner.name, amount, false),
+              );
+            }
+            winner.net -= amount;
+            loser.net += amount;
+          }
+          breakEven.forEach((p) => {
+            payoutHTML.push(
+              `<div class='breakeven-card'><strong>${p.name}</strong> is Break Even</div>`,
+            );
+          });
+
+          document.getElementById("payoutList").innerHTML =
+            payoutHTML.length > 0
+              ? payoutHTML.join("")
+              : "<div class='breakeven-card'>No transactions needed.</div>";
+          document.getElementById("results").style.display = "block";
+          document.getElementById("shareBtn").style.display = "block";
+          document
+            .getElementById("results")
+            .scrollIntoView({ behavior: "smooth" });
         }
+      }
 
-        function createPayout(from, to, amount, isPerfect) {
-            let perfectTag = isPerfect ? `<div class="perfect-tag">⭐ PERFECT MATCH</div>` : "";
-            return `<div class="settlement-card"><div class="player-box payer"><span class="player-name">${from}</span><span class="player-label">PAYS</span></div><div class="amount-box">${perfectTag}<span class="amount-value">$${amount.toFixed(2)}</span><span class="amount-arrow">➔</span></div><div class="player-box receiver"><span class="player-name">${to}</span><span class="player-label">GETS</span></div></div>`;
+      function createPayout(from, to, amount, isPerfect) {
+        let perfectTag = isPerfect
+          ? `<div class="perfect-tag">⭐ PERFECT MATCH</div>`
+          : "";
+        return `<div class="settlement-card"><div class="player-box payer"><span class="player-name">${from}</span><span class="player-label">PAYS</span></div><div class="amount-box">${perfectTag}<span class="amount-value">$${amount.toFixed(2)}</span><span class="amount-arrow">➔</span></div><div class="player-box receiver"><span class="player-name">${to}</span><span class="player-label">GETS</span></div></div>`;
+      }
+
+      function showError(diff) {
+        let box = document.getElementById("errorBox");
+        let displayMoney = document.getElementById("displayMoney");
+        let displayLabel = document.getElementById("displayLabel");
+        let displayChips = document.getElementById("displayChips");
+        let suggestion = document.getElementById("smartSuggestion");
+        box.style.display = "block";
+        let chipCount = diff / 0.25;
+        let absChips = Math.abs(chipCount);
+        let diffStr = Math.abs(diff).toFixed(2);
+        let isPositive = diff > 0;
+        displayMoney.innerText = `$${diffStr}`;
+        displayMoney.style.color = isPositive ? "#27ae60" : "#d32f2f";
+        displayLabel.innerText = isPositive
+          ? "Extra Money (+)"
+          : "Missing Money (-)";
+        displayLabel.style.color = isPositive ? "#27ae60" : "#d32f2f";
+        displayChips.innerText = `≈ ${absChips} Chips`;
+        let msg = "";
+        let absDiff = Math.abs(diff);
+        if (absDiff >= 8 && absDiff <= 12) {
+          msg = `💡 <strong>Hint:</strong> This is very close to <strong>1 Buy-in ($10)</strong>. Did someone forget to write theirs down?`;
+        } else if (absDiff <= 2.5) {
+          msg = `💡 <strong>Hint:</strong> Small amount. Likely a typo or counting error (about ${absChips} chips).`;
+        } else {
+          let buyins = Math.round(absDiff / 10);
+          if (buyins > 0)
+            msg = `💡 <strong>Hint:</strong> Looks like roughly <strong>${buyins} Buy-in(s)</strong> are off.`;
+          else
+            msg = `💡 <strong>Hint:</strong> Double check your total chip counts.`;
         }
+        suggestion.innerHTML = msg;
+      }
 
-        function showError(diff) {
-            let box = document.getElementById("errorBox");
-            let displayMoney = document.getElementById("displayMoney");
-            let displayLabel = document.getElementById("displayLabel");
-            let displayChips = document.getElementById("displayChips");
-            let suggestion = document.getElementById("smartSuggestion");
-            box.style.display = "block";
-            let chipCount = diff / 0.25;
-            let absChips = Math.abs(chipCount);
-            let diffStr = Math.abs(diff).toFixed(2);
-            let isPositive = diff > 0;
-            displayMoney.innerText = `$${diffStr}`;
-            displayMoney.style.color = isPositive ? "#27ae60" : "#d32f2f";
-            displayLabel.innerText = isPositive ? "Extra Money (+)" : "Missing Money (-)";
-            displayLabel.style.color = isPositive ? "#27ae60" : "#d32f2f";
-            displayChips.innerText = `≈ ${absChips} Chips`;
-            let msg = "";
-            let absDiff = Math.abs(diff);
-            if (absDiff >= 8 && absDiff <= 12) { msg = `💡 <strong>Hint:</strong> This is very close to <strong>1 Buy-in ($10)</strong>. Did someone forget to write theirs down?`; } 
-            else if (absDiff <= 2.50) { msg = `💡 <strong>Hint:</strong> Small amount. Likely a typo or counting error (about ${absChips} chips).`; } 
-            else { let buyins = Math.round(absDiff / 10); if (buyins > 0) msg = `💡 <strong>Hint:</strong> Looks like roughly <strong>${buyins} Buy-in(s)</strong> are off.`; else msg = `💡 <strong>Hint:</strong> Double check your total chip counts.`; }
-            suggestion.innerHTML = msg;
-        }
+      // --- PIXEL-PERFECT CANVAS DRAWING ENGINE ---
+      function generateAndShareImage() {
+        const shareBtn = document.getElementById("shareBtn");
+        const originalText = shareBtn.innerText;
+        shareBtn.innerText = "🎨 Drawing...";
+        shareBtn.style.opacity = "0.7";
 
-        // --- PIXEL-PERFECT CANVAS DRAWING ENGINE ---
-function generateAndShareImage() {
-    const shareBtn = document.getElementById("shareBtn");
-    const originalText = shareBtn.innerText;
-    shareBtn.innerText = "🎨 Drawing...";
-    shareBtn.style.opacity = "0.7";
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Setup dimensions
-    const width = 800;
-    const headerHeight = 220; 
-    const rowHeight = 140; 
-    const padding = 40;
-    const listHeight = Math.max(currentPayouts.length * rowHeight, 100); 
-    const height = headerHeight + listHeight + padding * 2;
-    
-    canvas.width = width;
-    canvas.height = height;
+        // Setup dimensions
+        const width = 800;
+        const headerHeight = 220;
+        const rowHeight = 140;
+        const padding = 40;
+        const listHeight = Math.max(currentPayouts.length * rowHeight, 100);
+        const height = headerHeight + listHeight + padding * 2;
 
-    const bgImage = new Image();
-    bgImage.src = BACKGROUND_IMAGE_URL;
+        canvas.width = width;
+        canvas.height = height;
 
-    bgImage.onload = function() {
-        // 1. Draw Background Image
-        // --- FIX: Draw Background with "Cover" aspect ratio ---
-const imgRatio = bgImage.width / bgImage.height;
-const canvasRatio = width / height;
-let renderWidth, renderHeight, offsetX, offsetY;
+        const bgImage = new Image();
+        bgImage.src = BACKGROUND_IMAGE_URL;
 
-if (imgRatio > canvasRatio) {
-    // Image is wider than canvas
-    renderHeight = height;
-    renderWidth = bgImage.width * (height / bgImage.height);
-    offsetX = (width - renderWidth) / 2;
-    offsetY = 0;
-} else {
-    // Image is taller than canvas
-    renderWidth = width;
-    renderHeight = bgImage.height * (width / bgImage.width);
-    offsetX = 0;
-    offsetY = (height - renderHeight) / 2;
-}
+        bgImage.onload = function () {
+          // 1. Draw Background Image
+          // --- FIX: Draw Background with "Cover" aspect ratio ---
+          const imgRatio = bgImage.width / bgImage.height;
+          const canvasRatio = width / height;
+          let renderWidth, renderHeight, offsetX, offsetY;
 
-ctx.drawImage(bgImage, offsetX, offsetY, renderWidth, renderHeight);
+          if (imgRatio > canvasRatio) {
+            // Image is wider than canvas
+            renderHeight = height;
+            renderWidth = bgImage.width * (height / bgImage.height);
+            offsetX = (width - renderWidth) / 2;
+            offsetY = 0;
+          } else {
+            // Image is taller than canvas
+            renderWidth = width;
+            renderHeight = bgImage.height * (width / bgImage.width);
+            offsetX = 0;
+            offsetY = (height - renderHeight) / 2;
+          }
 
-// Apply a slight dark overlay so text remains readable over any image
-ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; 
-ctx.fillRect(0, 0, width, height);
-        
-        // --- 2. DRAW GLASS HEADER ---
-        // --- 2. DRAW GLASS HEADER (Updating existing variables) ---
-        headW = 550; 
-        headH = 150; // Increased height for more breathing room
-        headX = (width - headW) / 2;
-        headY = 40;
+          ctx.drawImage(bgImage, offsetX, offsetY, renderWidth, renderHeight);
 
-        ctx.save();
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        ctx.shadowBlur = 32;
-        drawRoundedRect(ctx, headX, headY, headW, headH, 24, "rgba(255, 255, 255, 0.55)");
-        
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.restore();
+          // Apply a slight dark overlay so text remains readable over any image
+          ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+          ctx.fillRect(0, 0, width, height);
 
-        // --- HEADER TEXT ---
-        ctx.fillStyle = "#ffffff";
-        ctx.textAlign = "center";
-        ctx.font = "bold 65px 'Lobster', cursive";
-        // Title position
-        ctx.fillText("Chipwise Payouts", width / 2, headY + 75);
-        
-        // --- SUBTITLE (Added spacing here) ---
-        ctx.font = "500 22px -apple-system, BlinkMacSystemFont, sans-serif";
-        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-        // Changed from +100 to +125 to create a clear gap
-        ctx.fillText("All Balanced. Time to Settle Up!", width / 2, headY + 125);
+          // --- 2. DRAW GLASS HEADER ---
+          // --- 2. DRAW GLASS HEADER (Updating existing variables) ---
+          headW = 550;
+          headH = 150; // Increased height for more breathing room
+          headX = (width - headW) / 2;
+          headY = 40;
 
-        // --- 3. DRAW MAIN SETTLEMENT CARD ---
-        const cardX = padding;
-        const cardY = headerHeight;
-        const cardW = width - (padding * 2);
-        const cardH = listHeight + 40;
+          ctx.save();
+          ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+          ctx.shadowBlur = 32;
+          drawRoundedRect(
+            ctx,
+            headX,
+            headY,
+            headW,
+            headH,
+            24,
+            "rgba(255, 255, 255, 0.55)",
+          );
 
-        ctx.save();
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-        ctx.shadowBlur = 40;
-        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 16, "rgba(255, 255, 255, 0.92)");
-        ctx.restore();
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.restore();
 
-        // --- 4. DRAW SETTLEMENT ROWS ---
-        let currentY = cardY + 40;
-        const standardFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+          // --- HEADER TEXT ---
+          ctx.fillStyle = "#ffffff";
+          ctx.textAlign = "center";
+          ctx.font = "bold 65px 'Lobster', cursive";
+          // Title position
+          ctx.fillText("Chipwise Payouts", width / 2, headY + 75);
 
-        currentPayouts.forEach((p, index) => {
-            const centerY = currentY + (rowHeight / 2) - 20;
+          // --- SUBTITLE (Added spacing here) ---
+          ctx.font = "500 22px -apple-system, BlinkMacSystemFont, sans-serif";
+          ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+          // Changed from +100 to +125 to create a clear gap
+          ctx.fillText(
+            "All Balanced. Time to Settle Up!",
+            width / 2,
+            headY + 125,
+          );
+
+          // --- 3. DRAW MAIN SETTLEMENT CARD ---
+          const cardX = padding;
+          const cardY = headerHeight;
+          const cardW = width - padding * 2;
+          const cardH = listHeight + 40;
+
+          ctx.save();
+          ctx.shadowColor = "rgba(0, 0, 0, 0.25)";
+          ctx.shadowBlur = 40;
+          drawRoundedRect(
+            ctx,
+            cardX,
+            cardY,
+            cardW,
+            cardH,
+            16,
+            "rgba(255, 255, 255, 0.92)",
+          );
+          ctx.restore();
+
+          // --- 4. DRAW SETTLEMENT ROWS ---
+          let currentY = cardY + 40;
+          const standardFont =
+            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+
+          currentPayouts.forEach((p, index) => {
+            const centerY = currentY + rowHeight / 2 - 20;
 
             // Settlement Row Box (The "Card" style from your results section)
             ctx.save();
             ctx.strokeStyle = "#f1f3f4";
             ctx.lineWidth = 2;
-            drawRoundedRect(ctx, cardX + 20, currentY, cardW - 40, rowHeight - 20, 12, "#ffffff");
+            drawRoundedRect(
+              ctx,
+              cardX + 20,
+              currentY,
+              cardW - 40,
+              rowHeight - 20,
+              12,
+              "#ffffff",
+            );
             ctx.stroke();
             ctx.restore();
 
@@ -549,167 +881,236 @@ ctx.fillRect(0, 0, width, height);
             ctx.fillStyle = "#333";
             ctx.font = "bold 24px " + standardFont;
             ctx.fillText(p.from, cardX + 50, centerY);
-            drawBadge(ctx, "PAYS", cardX + 50, centerY + 25, 'payer');
+            drawBadge(ctx, "PAYS", cardX + 50, centerY + 25, "payer");
 
             // Receiver (Right)
             ctx.textAlign = "right";
             ctx.fillStyle = "#333";
             ctx.font = "bold 24px " + standardFont;
             ctx.fillText(p.to, cardX + cardW - 50, centerY);
-            drawBadge(ctx, "GETS", cardX + cardW - 50, centerY + 25, 'receiver', true);
+            drawBadge(
+              ctx,
+              "GETS",
+              cardX + cardW - 50,
+              centerY + 25,
+              "receiver",
+              true,
+            );
 
             // Amount (Center)
             ctx.textAlign = "center";
             ctx.fillStyle = "#2d3436";
             ctx.font = "800 42px " + standardFont;
             ctx.fillText("$" + p.amt.toFixed(2), width / 2, centerY + 10);
-            
+
             // Arrow
             ctx.font = "24px sans-serif";
             ctx.fillStyle = "#b2bec3";
             ctx.fillText("➔", width / 2, centerY + 40);
 
             // Perfect Match Tag
-            if (p.type === 'perfect') {
-                ctx.fillStyle = "#f1c40f";
-                drawRoundedRect(ctx, width/2 - 60, currentY - 10, 130, 22, 4, "#f1c40f");
-                ctx.fillStyle = "#fff";
-                ctx.font = "bold 12px " + standardFont;
-                ctx.fillText("\u00A0\u00A0⭐ PERFECT MATCH", width / 2, currentY + 6);
+            if (p.type === "perfect") {
+              ctx.fillStyle = "#f1c40f";
+              drawRoundedRect(
+                ctx,
+                width / 2 - 60,
+                currentY - 10,
+                130,
+                22,
+                4,
+                "#f1c40f",
+              );
+              ctx.fillStyle = "#fff";
+              ctx.font = "bold 12px " + standardFont;
+              ctx.fillText(
+                "\u00A0\u00A0⭐ PERFECT MATCH",
+                width / 2,
+                currentY + 6,
+              );
             }
 
             currentY += rowHeight;
-        });
+          });
 
-        finalizeShare(canvas, shareBtn, originalText);
-    };
-    
-    // Fallback if background image is missing
-    bgImage.onerror = () => { bgImage.src = ""; bgImage.onload(); };
-}
+          finalizeShare(canvas, shareBtn, originalText);
+        };
 
-// --- UPDATED BADGE HELPER ---
-    function drawBadge(ctx, text, x, y, type, isRight = false) {
+        // Fallback if background image is missing
+        bgImage.onerror = () => {
+          bgImage.src = "";
+          bgImage.onload();
+        };
+      }
+
+      // --- UPDATED BADGE HELPER ---
+      function drawBadge(ctx, text, x, y, type, isRight = false) {
         ctx.font = "bold 12px -apple-system, BlinkMacSystemFont, sans-serif";
         const w = ctx.measureText(text).width + 16;
         const h = 20;
         const bx = isRight ? x - w : x;
-        
-        const bgColor = type === 'payer' ? '#fadbd8' : '#d5f5e3';
-        const textColor = type === 'payer' ? '#c0392b' : '#27ae60';
-        
+
+        const bgColor = type === "payer" ? "#fadbd8" : "#d5f5e3";
+        const textColor = type === "payer" ? "#c0392b" : "#27ae60";
+
         drawRoundedRect(ctx, bx, y, w, h, 10, bgColor);
         ctx.fillStyle = textColor;
         ctx.textAlign = "center";
-        ctx.fillText(text, bx + (w/2), y + 14);
-    }
+        ctx.fillText(text, bx + w / 2, y + 14);
+      }
 
-        // --- HELPER: Finalize Share Process ---
-        function finalizeShare(canvas, btn, originalText) {
-            canvas.toBlob(async (blob) => {
-                const file = new File([blob], "chipwise_payouts.png", { type: "image/png" });
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
+      // --- HELPER: Finalize Share Process ---
+      function finalizeShare(canvas, btn, originalText) {
+        canvas.toBlob(async (blob) => {
+          const file = new File([blob], "chipwise_payouts.png", {
+            type: "image/png",
+          });
+          btn.innerText = originalText;
+          btn.style.opacity = "1";
 
-                        // Get current date and time (e.g., "Oct 24, 8:30 PM")
-                const now = new Date();
-                const timestamp = now.toLocaleString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    hour: 'numeric', 
-                    minute: '2-digit', 
-                    hour12: true 
-                });
+          // Get current date and time (e.g., "Oct 24, 8:30 PM")
+          const now = new Date();
+          const timestamp = now.toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          });
 
-                const shareText = `Chipwise Payouts - ${timestamp} ♠️♥️`;
+          const shareText = `Chipwise Payouts - ${timestamp} ♠️♥️`;
 
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({
-                            files: [file], title: 'Chipwise Settlement', text: shareText
-                        });
-                    } catch (err) { console.log("Share cancelled", err); }
-                } else {
-                    const link = document.createElement('a');
-                    link.download = `chipwise_payouts_${now.toLocaleDateString().replace(/\//g, '-')}.png`;
-                    link.href = canvas.toDataURL();
-                    link.click();
-                    alert(`Image saved!\nGenerated on: ${timestamp}`);
-                }
-            });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: "Chipwise Settlement",
+                text: shareText,
+              });
+            } catch (err) {
+              console.log("Share cancelled", err);
+            }
+          } else {
+            const link = document.createElement("a");
+            link.download = `chipwise_payouts_${now.toLocaleDateString().replace(/\//g, "-")}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            alert(`Image saved!\nGenerated on: ${timestamp}`);
+          }
+        });
+      }
+
+      function drawRoundedRect(ctx, x, y, w, h, r, color) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+
+      // --- SUPERNOVA CONFETTI ---
+      function triggerConfetti() {
+        const canvas = document.getElementById("confetti-canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const colors = [
+          "#f44336",
+          "#e91e63",
+          "#9c27b0",
+          "#673ab7",
+          "#3f51b5",
+          "#2196f3",
+          "#03a9f4",
+          "#00bcd4",
+          "#009688",
+          "#4caf50",
+          "#8bc34a",
+          "#cddc39",
+          "#ffeb3b",
+          "#ffc107",
+          "#ff9800",
+          "#ff5722",
+          "#795548",
+          "#FFD700",
+          "#C0C0C0",
+          "#FF1493",
+          "#00FF7F",
+          "#FF69B4",
+          "#1E90FF",
+          "#FFFF00",
+          "#00FFFF",
+          "#FF4500",
+          "#ADFF2F",
+          "#FF00FF",
+          "#7FFF00",
+          "#8A2BE2",
+          "#FFD700",
+          "#00CED1",
+          "#FF6347",
+          "#32CD32",
+          "#9370DB",
+          "#40E0D0",
+        ];
+
+        for (let i = 0; i < 400; i++) {
+          const velocity = Math.random() * 45 + 15;
+          const angle = Math.random() * Math.PI * 2;
+
+          particles.push({
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            r: Math.random() * 6 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            tilt: Math.floor(Math.random() * 10) - 10,
+            tiltAngle: 0,
+            tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+            shape: Math.random() < 0.6 ? "square" : "circle",
+          });
         }
 
-        function drawRoundedRect(ctx, x, y, w, h, r, color) {
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          let active = false;
+
+          particles.forEach((p) => {
+            p.tiltAngle += p.tiltAngleIncremental;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.4;
+            p.vx *= 0.94;
+            p.vy *= 0.94;
+
+            if (p.y < canvas.height) active = true;
+
+            ctx.fillStyle = p.color;
             ctx.beginPath();
-            ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-            ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-            ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-            ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
-            ctx.closePath(); ctx.fillStyle = color; ctx.fill();
-        }
 
-        // --- SUPERNOVA CONFETTI ---
-        function triggerConfetti() {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            const colors = [
-                '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548', '#FFD700', '#C0C0C0',
-                '#FF1493', '#00FF7F', '#FF69B4', '#1E90FF', '#FFFF00', '#00FFFF', '#FF4500', '#ADFF2F', '#FF00FF', '#7FFF00', '#8A2BE2', '#FFD700', '#00CED1', '#FF6347', '#32CD32', '#9370DB', '#40E0D0'
-            ];
-            
-            for (let i = 0; i < 400; i++) {
-                const velocity = Math.random() * 45 + 15; 
-                const angle = Math.random() * Math.PI * 2; 
-                
-                particles.push({
-                    x: canvas.width / 2, 
-                    y: canvas.height / 2,
-                    vx: Math.cos(angle) * velocity,
-                    vy: Math.sin(angle) * velocity,
-                    r: Math.random() * 6 + 4, 
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    tilt: Math.floor(Math.random() * 10) - 10,
-                    tiltAngle: 0,
-                    tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
-                    shape: Math.random() < 0.6 ? 'square' : 'circle'
-                });
+            if (p.shape === "square") {
+              let width = p.r * 2;
+              let height = p.r * 2 * Math.abs(Math.cos(p.tiltAngle));
+              ctx.fillRect(p.x, p.y, width, height);
+            } else {
+              ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+              ctx.fill();
             }
+          });
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let active = false;
-                
-                particles.forEach((p) => {
-                    p.tiltAngle += p.tiltAngleIncremental;
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.4; 
-                    p.vx *= 0.94; 
-                    p.vy *= 0.94;
-
-                    if (p.y < canvas.height) active = true;
-                    
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    
-                    if (p.shape === 'square') {
-                        let width = p.r * 2;
-                        let height = p.r * 2 * Math.abs(Math.cos(p.tiltAngle)); 
-                        ctx.fillRect(p.x, p.y, width, height);
-                    } else {
-                        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-                        ctx.fill();
-                    }
-                });
-
-                if (active) requestAnimationFrame(animate);
-            }
-            animate();
+          if (active) requestAnimationFrame(animate);
         }
+        animate();
+      }
     </script>
-</body>
+  </body>
 </html>
