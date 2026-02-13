@@ -328,13 +328,14 @@
         }
 
         // --- ENHANCED: Save with History Logging ---
-        function handleHistory(input, type) {
+                function handleHistory(input, type) {
+            // Only log if the type is 'Buy-ins'. Ignore 'Chips'.
+            if (type !== 'Buy-ins') return;
+
             const newVal = parseInt(input.value) || 0;
             const oldVal = parseInt(input.oldValue) || 0;
 
-            // Only run if the value actually changed
             if (oldVal !== newVal) {
-                // 1. Capture the state from BEFORE the change for the Undo button
                 const prevStateString = input.dataset.prevState;
                 if (prevStateString) {
                     historyStack.push(prevStateString);
@@ -343,14 +344,11 @@
 
                 const playerName = input.closest('tr').cells[0].querySelector('input').value || "Unnamed";
                 
-                // 2. Log to Activity History
                 logActivity(playerName, type, oldVal, newVal);
                 
-                // 3. Update the 'old' reference and Save
                 input.oldValue = newVal; 
                 saveData();
                 
-                // 4. Refresh the snapshot for subsequent edits
                 input.dataset.prevState = localStorage.getItem(STORAGE_KEY);
             }
         }
@@ -408,19 +406,37 @@
             const now = new Date();
             const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
+            const isRemoval = type === "Removed";
             const diff = parseInt(to) - parseInt(from);
             const sign = diff >= 0 ? "+" : "-";
             const displayDiff = Math.abs(diff);
             
-            const actionColor = diff >= 0 ? '#2e7d32' : '#c0392b';
+            // Set colors: Red for removals or negative changes, Green for additions
+            const actionColor = isRemoval ? '#c0392b' : (diff >= 0 ? '#2e7d32' : '#c0392b');
             const borderColor = isUndo ? '#d32f2f' : actionColor;
             const undoLabel = isUndo ? `<span style="background: #d32f2f; color: white; padding: 2px 5px; border-radius: 4px; font-size: 0.7em; margin-bottom: 2px; font-weight: bold;">UNDO</span>` : "";
 
             const dividerStyle = "background: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.15)) no-repeat right center / 1px 12px;";
 
-            // RESPONSIVE UPGRADES:
-            // 1. 'max-content 1fr max-content max-content': Columns 1, 3, & 4 only take exactly the space their text needs. 
-            //    Column 2 (Name) gets EVERY remaining pixel.
+            // COLUMN 3 & 4 LOGIC
+            let column3Content = `${sign}${displayDiff}&nbsp;Buy-in`;
+            let column4Content = `
+                <span style="margin-right: 3px;">Total</span>
+                <span style="margin-right: 3px;">(${from}${sign}${displayDiff})</span>
+                <span style="margin-right: 3px;">=</span>
+                <span>${to}</span>
+            `;
+
+            // Swap if player is removed
+            if (isRemoval) {
+                column3Content = "Player Removed";
+                column4Content = `
+                    <span style="margin-right: 3px;">Total Buy-ins</span>
+                    <span style="margin-right: 3px;">=</span>
+                    <span>${from}</span>
+                `;
+            }
+
             const entry = `
                 <div style="display: grid; grid-template-columns: max-content 1fr max-content max-content; align-items: stretch; width: 100%; font-family: 'Courier New', Courier, monospace; 
                             background: rgba(0,0,0,0.03); 
@@ -430,7 +446,7 @@
                             border-radius: 6px;
                             box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                     
-                    <div style="color: #444; font-weight: 600;font-size: clamp(0.8em, 2.5vw, 0.8em); display: flex; align-items: center; justify-content: center; padding: 0 6px; padding-right: 10px; ${dividerStyle}">
+                    <div style="color: #444; font-weight: 600; font-size: clamp(0.8em, 2.5vw, 0.8em); display: flex; align-items: center; justify-content: center; padding: 0 6px; padding-right: 10px; ${dividerStyle}">
                         ${time}
                     </div>
                     
@@ -441,15 +457,12 @@
                         <span style="font-size: clamp(0.85em, 3.5vw, 1em);">${name}</span>
                     </div>
                     
-                    <div style="color: ${actionColor}; font-weight: 700; font-size: clamp(0.75em, 3vw, 0.85em); display: flex; align-items: center; justify-content: center; padding: 0 8px; ${dividerStyle}">
-                        ${sign}${displayDiff}&nbsp;Buy-in
+                    <div style="color: ${actionColor}; font-weight: 700; font-size: clamp(0.70em, 2.8vw, 0.8em); display: flex; align-items: center; justify-content: center; padding: 0 8px; ${dividerStyle}">
+                        ${column3Content}
                     </div>
                     
-                    <div style="color: #666; font-weight: 700;font-size: clamp(0.80em, 2.5vw, 0.75em); padding: 0 4px 0 8px; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
-                        <span style="margin-right: 3px;">Total</span>
-                        <span style="margin-right: 3px;">(${from}${sign}${displayDiff})</span>
-                        <span style="margin-right: 3px;">=</span>
-                        <span>${to}</span>
+                    <div style="color: #666; font-weight: 700; font-size: clamp(0.75em, 2.5vw, 0.75em); padding: 0 4px 0 8px; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+                        ${column4Content}
                     </div>
                 </div>
             `;
@@ -500,8 +513,8 @@
                 <td>
                     <input type="number" min="0" placeholder="0" value="${chips}" 
                         inputmode="numeric" pattern="[0-9]*"
-                        onfocus="this.oldValue = this.value; this.dataset.prevState = localStorage.getItem(STORAGE_KEY); this.select()" 
-                        onblur="handleHistory(this, 'Chips')"
+                        onfocus="this.dataset.prevState = localStorage.getItem(STORAGE_KEY); this.select()" 
+                        oninput="saveData()" 
                         onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()">
                 </td>
                 <td>
@@ -512,14 +525,19 @@
         }
 
         function removeRow(btn) { 
-            const playerName = btn.closest('tr').cells[0].querySelector('input').value || "Player";
+            const row = btn.closest('tr');
+            const playerName = row.cells[0].querySelector('input').value || "Player";
+            const finalBuyins = row.cells[1].querySelector('input').value || 0;
+
             if(confirm(`Remove ${playerName}?`)) {
                 const currentState = localStorage.getItem(STORAGE_KEY);
                 historyStack.push(currentState);
                 document.getElementById("undoBtn").style.display = "block";
                 
-                logActivity(playerName, "Removed", "Active", "Gone");
-                btn.parentNode.parentNode.remove(); 
+                // Signal a removal by passing "Removed" as the type
+                logActivity(playerName, "Removed", finalBuyins, finalBuyins);
+                
+                row.remove(); 
                 saveData(); 
             }
         }
@@ -723,7 +741,11 @@
                     ctx.fillText(p.from, cardX + 50, centerY);
                     drawBadge(ctx, "PAYS", cardX + 50, centerY + 25, 'payer');
 
-                    ctx.textAlign = "right"; ctx.fillText(p.to, cardX + cardW - 50, centerY);
+                    // Right Side: Receiver
+                    ctx.textAlign = "right"; 
+                    ctx.fillStyle = "#333"; // <--- FIXED: Explicitly set back to dark color
+                    ctx.font = "bold 24px " + standardFont;
+                    ctx.fillText(p.to, cardX + cardW - 50, centerY);
                     drawBadge(ctx, "GETS", cardX + cardW - 50, centerY + 25, 'receiver', true);
 
                     ctx.textAlign = "center"; ctx.fillStyle = "#2d3436"; ctx.font = "800 42px " + standardFont;
