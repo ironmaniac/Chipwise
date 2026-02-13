@@ -368,35 +368,6 @@
             }
         }
 
-        // function logActivity(name, type, from, to) {
-        //     const now = new Date();
-        //     const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-        //     const diff = to - from;
-        //     const sign = diff >= 0 ? "+" : "-";
-        //     const displayDiff = Math.abs(diff); // Use absolute value for the action text
-            
-        //     // e.g., +1 Buy-in or -2 Chips
-        //     const actionText = `${sign}${displayDiff} ${type.replace('s', '')}`; 
-            
-        //     // Dynamic color: Green for adding, Red for subtracting
-        //     const actionColor = diff >= 0 ? '#2e7d32' : '#c0392b';
-            
-        //     const entry = `
-        //         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        //             <span style="color: #888; min-width: 75px;">${time}</span>
-        //             <span style="font-weight: bold; flex: 1; padding: 0 10px;">${name}</span>
-        //             <span style="color: ${actionColor}; font-weight: 600; min-width: 80px;">${actionText}</span>
-        //             <span style="color: #666; font-size: 0.85em;">Total (${from} ${sign === '+' ? '+' : '-'} ${displayDiff} = ${to})</span>
-        //         </div>
-        //     `;
-            
-        //     actionLog.unshift(entry);
-        //     if (actionLog.length > 50) actionLog.pop(); 
-            
-        //     localStorage.setItem(HISTORY_KEY, JSON.stringify(actionLog));
-        //     updateHistoryUI();
-        // }
 
         function updateHistoryUI() {
             const logDiv = document.getElementById("historyLog");
@@ -460,7 +431,7 @@
                             border-radius: 6px;
                             box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                     
-                    <div style="color: #888; font-size: clamp(0.7em, 2.5vw, 0.8em); display: flex; align-items: center; justify-content: center; padding: 0 6px; ${dividerStyle}">
+                    <div style="color: #444; font-weight: 600;font-size: clamp(0.8em, 2.5vw, 0.8em); display: flex; align-items: center; justify-content: center; padding: 0 6px; padding-right: 10px; ${dividerStyle}">
                         ${time}
                     </div>
                     
@@ -475,7 +446,7 @@
                         ${sign}${displayDiff}&nbsp;Buy-in
                     </div>
                     
-                    <div style="color: #666; font-size: clamp(0.65em, 2.5vw, 0.75em); padding: 0 4px 0 8px; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
+                    <div style="color: #666; font-weight: 700;font-size: clamp(0.80em, 2.5vw, 0.75em); padding: 0 4px 0 8px; display: flex; align-items: center; justify-content: center; white-space: nowrap;">
                         <span style="margin-right: 3px;">Total</span>
                         <span style="margin-right: 3px;">(${from}${sign}${displayDiff})</span>
                         <span style="margin-right: 3px;">=</span>
