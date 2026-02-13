@@ -481,12 +481,35 @@
             const table = document.getElementById("playerTable").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
             
-            // FIX: Capturing 'prevState' inside onfocus so we have a clean backup before oninput overwrites it.
+            // ADDED: 
+            // 1. onblur="handleHistory(...)" to catch the Chrome checkmark closing the keyboard
+            // 2. onkeyup to force a blur if they hit the physical Enter/Return key
             newRow.innerHTML = `
-                <td><input type="text" placeholder="Name" value="${name}" oninput="saveData()" onfocus="this.select()"></td>
-                <td><input type="number" min="1" placeholder="1" value="${buyins}" onfocus="this.oldValue=this.value; this.dataset.prevState=localStorage.getItem(STORAGE_KEY); this.select()" oninput="saveData()" onchange="handleInputChange(this, 'Buy-ins')"></td>
-                <td><input type="number" min="0" placeholder="0" value="${chips}" onfocus="this.oldValue=this.value; this.dataset.prevState=localStorage.getItem(STORAGE_KEY); this.select()" oninput="saveData()" onchange="handleInputChange(this, 'Chips')"></td>
-                <td><button class="delete-btn" onclick="removeRow(this)">×</button></td>
+                <td>
+                    <input type="text" placeholder="Name" value="${name}" 
+                           oninput="saveData()" onfocus="this.select()">
+                </td>
+                <td>
+                    <input type="number" min="1" placeholder="1" value="${buyins}" 
+                           onfocus="this.dataset.oldVal = this.value; this.select()" 
+                           onclick="this.select()"
+                           oninput="saveData()"
+                           onchange="handleHistory(this, 'Buy-ins')"
+                           onblur="handleHistory(this, 'Buy-ins')"
+                           onkeyup="if(event.key === 'Enter') this.blur()">
+                </td>
+                <td>
+                    <input type="number" min="0" placeholder="0" value="${chips}" 
+                           onfocus="this.dataset.oldVal = this.value; this.select()" 
+                           onclick="this.select()"
+                           oninput="saveData()" 
+                           onchange="handleHistory(this, 'Chips')"
+                           onblur="handleHistory(this, 'Chips')"
+                           onkeyup="if(event.key === 'Enter') this.blur()">
+                </td>
+                <td>
+                    <button class="delete-btn" onclick="removeRow(this)">×</button>
+                </td>
             `;
             saveData();
         }
