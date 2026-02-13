@@ -328,12 +328,13 @@
         }
 
         // --- ENHANCED: Save with History Logging ---
-        function handleInputChange(input, type) {
+        function handleHistory(input, type) {
             const newVal = parseInt(input.value) || 0;
             const oldVal = parseInt(input.oldValue) || 0;
 
+            // Only run if the value actually changed
             if (oldVal !== newVal) {
-                // 1. Push the clean snapshot we took on focus to the Undo stack
+                // 1. Capture the state from BEFORE the change for the Undo button
                 const prevStateString = input.dataset.prevState;
                 if (prevStateString) {
                     historyStack.push(prevStateString);
@@ -342,16 +343,14 @@
 
                 const playerName = input.closest('tr').cells[0].querySelector('input').value || "Unnamed";
                 
-                // 2. Log activity
-                if (type === 'Buy-ins') {
-                    logActivity(playerName, type, oldVal, newVal);
-                }
+                // 2. Log to Activity History
+                logActivity(playerName, type, oldVal, newVal);
                 
-                // 3. Update references for the next change
+                // 3. Update the 'old' reference and Save
                 input.oldValue = newVal; 
                 saveData();
                 
-                // 4. Update the snapshot so if they keep typing without clicking away, it works
+                // 4. Refresh the snapshot for subsequent edits
                 input.dataset.prevState = localStorage.getItem(STORAGE_KEY);
             }
         }
@@ -487,27 +486,23 @@
             newRow.innerHTML = `
                 <td>
                     <input type="text" placeholder="Name" value="${name}" 
-                           oninput="saveData()" 
-                           onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()"
-                           onfocus="this.select()">
+                        oninput="saveData()" 
+                        onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()"
+                        onfocus="this.select()">
                 </td>
                 <td>
                     <input type="number" min="1" placeholder="1" value="${buyins}" 
-                           inputmode="numeric" pattern="[0-9]*"
-                           onfocus="this.dataset.oldVal = this.value; this.select()" 
-                           onclick="this.select()"
-                           oninput="saveData()"
-                           onblur="handleHistory(this, 'Buy-ins')"
-                           onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()">
+                        inputmode="numeric" pattern="[0-9]*"
+                        onfocus="this.oldValue = this.value; this.dataset.prevState = localStorage.getItem(STORAGE_KEY); this.select()" 
+                        onblur="handleHistory(this, 'Buy-ins')"
+                        onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()">
                 </td>
                 <td>
                     <input type="number" min="0" placeholder="0" value="${chips}" 
-                           inputmode="numeric" pattern="[0-9]*"
-                           onfocus="this.dataset.oldVal = this.value; this.select()" 
-                           onclick="this.select()"
-                           oninput="saveData()" 
-                           onblur="handleHistory(this, 'Chips')"
-                           onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()">
+                        inputmode="numeric" pattern="[0-9]*"
+                        onfocus="this.oldValue = this.value; this.dataset.prevState = localStorage.getItem(STORAGE_KEY); this.select()" 
+                        onblur="handleHistory(this, 'Chips')"
+                        onkeydown="if(event.key === 'Enter' || event.keyCode === 13) this.blur()">
                 </td>
                 <td>
                     <button class="delete-btn" onclick="removeRow(this)">×</button>
